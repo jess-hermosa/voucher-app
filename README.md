@@ -1,13 +1,41 @@
 ## Prerequisite
 
-1. install Node.js in your machine
+install Node.js in your machine
+
    https://nodejs.org/en
 
 - Choose Recommended for most user
 
-## Getting Started
+install Git in your machine, follow the instruction on this docs:
 
-First, run the development server:
+   https://github.com/jess-hermosa/voucher-app/blob/master/how-to/git.md?fbclid=IwAR0Wa425ccxvtkAIqY2-WiT-st01asC4gKIFKra2_VdVpTHUvC7zcb50znQ
+
+
+## Getting Started
+### Clone this repo in your machine: 
+open cmd or command prompt
+navigate to where you want to save the repo, example you saved your folder in C:/
+```
+cd C:/Projects
+```
+execute this command in your cmd
+```
+git clone git@github.com:jess-hermosa/voucher-app.git
+```
+
+wait until the cloning is complete
+
+after the clone is complete navigate to the cloned repository
+
+```
+cd voucher-app
+```
+execute this command
+```
+npm install
+```
+
+### Run the development server:
 
 ```bash
 npm run dev
