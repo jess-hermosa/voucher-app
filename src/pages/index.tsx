@@ -1,12 +1,14 @@
 import ContentSection from "@/Shared/Components/ContentSection";
 import Header from "@/Shared/Components/Header";
+import AddButton from "@/Shared/Components/AddButton";
 
 export default function Home() {
   return (
     <>
       <Header />
       <ContentSection>
-        <div>test your code here</div>
+    
+      <AddButton />
       </ContentSection>
     </>
   );
