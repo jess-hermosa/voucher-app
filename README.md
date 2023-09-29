@@ -32,6 +32,8 @@ cd voucher-app
 ```
 execute this command
 ```
+npm ci
+or
 npm install
 ```
 
