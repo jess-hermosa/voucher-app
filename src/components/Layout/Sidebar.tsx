@@ -15,7 +15,6 @@ const navigation = [
   { name: "Accounts", href: "#", icon: ServerIcon, current: true },
   { name: "Payee", href: "#", icon: SignalIcon, current: false },
   { name: "Employee", href: "#", icon: GlobeAltIcon, current: false },
-  { name: "Usage", href: "#", icon: ChartBarSquareIcon, current: false },
   { name: "Settings", href: "#", icon: Cog6ToothIcon, current: false },
 ];
 const teams = [
