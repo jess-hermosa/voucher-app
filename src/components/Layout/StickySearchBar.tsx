@@ -1,17 +1,16 @@
-import { FC } from "react";
+import { uiActions } from "@/store/ui";
 import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { useDispatch } from "react-redux";
 
-interface Props {
-  setSidebarOpen: (open: boolean) => void;
-}
+const StickySearchBar = () => {
+  var dispatch = useDispatch();
 
-const StickySearchBar: FC<Props> = ({ setSidebarOpen }) => {
   return (
     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-6 border-b border-white/5 bg-gray-900 px-4 shadow-sm sm:px-6 lg:px-8">
       <button
         type="button"
         className="-m-2.5 p-2.5 text-white xl:hidden"
-        onClick={() => setSidebarOpen(true)}
+        onClick={() => dispatch(uiActions.toggleSidebar("sidebar"))}
       >
         <span className="sr-only">Open sidebar</span>
         <Bars3Icon className="h-5 w-5" aria-hidden="true" />

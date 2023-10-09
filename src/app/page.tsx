@@ -29,20 +29,13 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
+export default function Home() {
   return (
     <>
       <div>
-        <Sidebar
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={(open: boolean) => setSidebarOpen(open)}
-        />
+        <Sidebar />
         <div className="xl:pl-72">
-          <StickySearchBar
-            setSidebarOpen={(open: boolean) => setSidebarOpen(open)}
-          />
+          <StickySearchBar />
           <main>
             <Header />
 

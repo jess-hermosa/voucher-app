@@ -1,7 +1,6 @@
 import { FC, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  ChartBarSquareIcon,
   Cog6ToothIcon,
   FolderIcon,
   GlobeAltIcon,
@@ -9,6 +8,9 @@ import {
   SignalIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "@/store";
+import { uiActions } from "@/store/ui";
 
 const navigation = [
   { name: "Vouchers", href: "#", icon: FolderIcon, current: false },
@@ -27,19 +29,17 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-interface Props {
-  sidebarOpen: boolean;
-  setSidebarOpen: (open: boolean) => void;
-}
+const Sidebar = () => {
+  const { isOpen, overlay } = useAppSelector((s) => s.ui);
+  const dispatch = useDispatch();
 
-const Sidebar: FC<Props> = ({ sidebarOpen, setSidebarOpen }) => {
   return (
     <>
-      <Transition.Root show={sidebarOpen} as={Fragment}>
+      <Transition.Root show={isOpen} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-50 xl:hidden"
-          onClose={setSidebarOpen}
+          onClose={() => dispatch(uiActions.toggleSidebar(null))}
         >
           <Transition.Child
             as={Fragment}
@@ -77,7 +77,7 @@ const Sidebar: FC<Props> = ({ sidebarOpen, setSidebarOpen }) => {
                     <button
                       type="button"
                       className="-m-2.5 p-2.5"
-                      onClick={() => setSidebarOpen(false)}
+                      onClick={() => dispatch(uiActions.toggleSidebar(null))}
                     >
                       <span className="sr-only">Close sidebar</span>
                       <XMarkIcon
