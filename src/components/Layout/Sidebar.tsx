@@ -1,4 +1,4 @@
-import { FC, Fragment } from "react";
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   Cog6ToothIcon,
@@ -13,16 +13,11 @@ import { useAppSelector } from "@/store";
 import { uiActions } from "@/store/ui";
 
 const navigation = [
-  { name: "Vouchers", href: "#", icon: FolderIcon, current: false },
-  { name: "Accounts", href: "#", icon: ServerIcon, current: true },
+  { name: "Vouchers", href: "#", icon: FolderIcon, current: true },
+  { name: "Accounts", href: "#", icon: ServerIcon, current: false },
   { name: "Payee", href: "#", icon: SignalIcon, current: false },
   { name: "Employee", href: "#", icon: GlobeAltIcon, current: false },
   { name: "Settings", href: "#", icon: Cog6ToothIcon, current: false },
-];
-const teams = [
-  { id: 1, name: "Planetaria", href: "#", initial: "P", current: false },
-  { id: 2, name: "Protocol", href: "#", initial: "P", current: false },
-  { id: 3, name: "Tailwind Labs", href: "#", initial: "T", current: false },
 ];
 
 function classNames(...classes: any) {
@@ -30,7 +25,7 @@ function classNames(...classes: any) {
 }
 
 const Sidebar = () => {
-  const { isOpen, overlay } = useAppSelector((s) => s.ui);
+  const { isOpen } = useAppSelector((s) => s.ui);
   const dispatch = useDispatch();
 
   return (
@@ -38,7 +33,7 @@ const Sidebar = () => {
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-50 xl:hidden"
+          className="relative z-50 lg:hidden"
           onClose={() => dispatch(uiActions.toggleSidebar(null))}
         >
           <Transition.Child
@@ -88,11 +83,11 @@ const Sidebar = () => {
                   </div>
                 </Transition.Child>
                 {/* Sidebar component, swap this element with another sidebar if you like */}
-                <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 ring-1 ring-white/10">
+                <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
                   <div className="flex h-16 shrink-0 items-center">
                     <img
                       className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                       alt="Your Company"
                     />
                   </div>
@@ -106,13 +101,18 @@ const Sidebar = () => {
                                 href={item.href}
                                 className={classNames(
                                   item.current
-                                    ? "bg-gray-800 text-white"
-                                    : "text-gray-400 hover:text-white hover:bg-gray-800",
+                                    ? "bg-gray-50 text-indigo-600"
+                                    : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
                                   "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                 )}
                               >
                                 <item.icon
-                                  className="h-6 w-6 shrink-0"
+                                  className={classNames(
+                                    item.current
+                                      ? "text-indigo-600"
+                                      : "text-gray-400 group-hover:text-indigo-600",
+                                    "h-6 w-6 shrink-0"
+                                  )}
                                   aria-hidden="true"
                                 />
                                 {item.name}
@@ -121,43 +121,16 @@ const Sidebar = () => {
                           ))}
                         </ul>
                       </li>
-                      <li>
-                        <div className="text-xs font-semibold leading-6 text-gray-400">
-                          Your teams
-                        </div>
-                        <ul role="list" className="-mx-2 mt-2 space-y-1">
-                          {teams.map((team) => (
-                            <li key={team.name}>
-                              <a
-                                href={team.href}
-                                className={classNames(
-                                  team.current
-                                    ? "bg-gray-800 text-white"
-                                    : "text-gray-400 hover:text-white hover:bg-gray-800",
-                                  "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                                )}
-                              >
-                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
-                                  {team.initial}
-                                </span>
-                                <span className="truncate">{team.name}</span>
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </li>
-                      <li className="-mx-6 mt-auto">
+                      <li className="mt-auto">
                         <a
                           href="#"
-                          className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
+                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
                         >
-                          <img
-                            className="h-8 w-8 rounded-full bg-gray-800"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
+                          <Cog6ToothIcon
+                            className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
+                            aria-hidden="true"
                           />
-                          <span className="sr-only">Your profile</span>
-                          <span aria-hidden="true">Tom Cook</span>
+                          Settings
                         </a>
                       </li>
                     </ul>
@@ -168,14 +141,15 @@ const Sidebar = () => {
           </div>
         </Dialog>
       </Transition.Root>
+
       {/* Static sidebar for desktop */}
-      <div className="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
+      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         {/* Sidebar component, swap this element with another sidebar if you like */}
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-black/10 px-6 ring-1 ring-white/5">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
           <div className="flex h-16 shrink-0 items-center">
             <img
               className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
               alt="Your Company"
             />
           </div>
@@ -189,13 +163,18 @@ const Sidebar = () => {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? "bg-gray-800 text-white"
-                            : "text-gray-400 hover:text-white hover:bg-gray-800",
+                            ? "bg-gray-50 text-indigo-600"
+                            : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
                           "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                         )}
                       >
                         <item.icon
-                          className="h-6 w-6 shrink-0"
+                          className={classNames(
+                            item.current
+                              ? "text-indigo-600"
+                              : "text-gray-400 group-hover:text-indigo-600",
+                            "h-6 w-6 shrink-0"
+                          )}
                           aria-hidden="true"
                         />
                         {item.name}
@@ -204,43 +183,16 @@ const Sidebar = () => {
                   ))}
                 </ul>
               </li>
-              <li>
-                <div className="text-xs font-semibold leading-6 text-gray-400">
-                  Your teams
-                </div>
-                <ul role="list" className="-mx-2 mt-2 space-y-1">
-                  {teams.map((team) => (
-                    <li key={team.name}>
-                      <a
-                        href={team.href}
-                        className={classNames(
-                          team.current
-                            ? "bg-gray-800 text-white"
-                            : "text-gray-400 hover:text-white hover:bg-gray-800",
-                          "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                        )}
-                      >
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
-                          {team.initial}
-                        </span>
-                        <span className="truncate">{team.name}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-              <li className="-mx-6 mt-auto">
+              <li className="mt-auto">
                 <a
                   href="#"
-                  className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
+                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
                 >
-                  <img
-                    className="h-8 w-8 rounded-full bg-gray-800"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
+                  <Cog6ToothIcon
+                    className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
+                    aria-hidden="true"
                   />
-                  <span className="sr-only">Your profile</span>
-                  <span aria-hidden="true">Tom Cook</span>
+                  Settings
                 </a>
               </li>
             </ul>
