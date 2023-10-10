@@ -12,8 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full bg-white">
-      <body className="h-full">
+    <html lang="en" className="h-full bg-white font-customfont">
+      <body className="h-full font-customfont">
         <Provider store={store}>
           <div>
             <Sidebar />

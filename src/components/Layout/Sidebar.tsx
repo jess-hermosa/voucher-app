@@ -17,7 +17,6 @@ const navigation = [
   { name: "Accounts", href: "#", icon: ServerIcon, current: false },
   { name: "Payee", href: "#", icon: SignalIcon, current: false },
   { name: "Employee", href: "#", icon: GlobeAltIcon, current: false },
-  { name: "Settings", href: "#", icon: Cog6ToothIcon, current: false },
 ];
 
 function classNames(...classes: any) {
