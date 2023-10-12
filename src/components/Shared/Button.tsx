@@ -1,10 +1,6 @@
-import { FC, MouseEventHandler } from "react";
+import { ButtonHTMLAttributes, FC } from "react";
 
-interface Props {
-  disabled?: boolean;
-  children?: React.ReactNode;
-  className?: string;
-  onClick?: MouseEventHandler<any>;
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   layout?: "primary" | "secondary";
 }
 
