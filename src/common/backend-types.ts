@@ -57,5 +57,6 @@ export interface VoucherAccount {
 export interface ArchivedVoucher {
   id: string;
   code: string;
+  payee: Payee;
   date: Date;
 }
