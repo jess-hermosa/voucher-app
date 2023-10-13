@@ -1,11 +1,11 @@
 import SectionHeader from "@/components/SectionHeader";
 
-const Home = () => {
+const Account = () => {
   return (
     <>
-      <SectionHeader header={"Dashboard"} />
+      <SectionHeader header={"Account"} />
     </>
   );
 };
 
-export default Home;
+export default Account;

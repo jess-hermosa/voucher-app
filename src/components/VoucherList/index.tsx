@@ -7,64 +7,11 @@ const statuses: any = {
   Overdue: "text-red-700 bg-red-50 ring-red-600/10",
 };
 
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(" ");
-}
-
 interface Props {
   voucherTransactions: VoucherTransactions[];
 }
 
-const voucherTransactions = [
-  {
-    dateTime: new Date(),
-    transactions: [
-      {
-        id: 1,
-        payee: {
-          id: "00012",
-          name: "BODARE NPC",
-          address: "Tagbilaran City",
-        },
-        code: "DV-2023-01-0003",
-      },
-      {
-        id: 2,
-        payee: {
-          id: "00011",
-          name: "James Bag-ao",
-          address: "Lindaville Subdivision Phase II",
-        },
-        code: "DV-2023-01-0002",
-      },
-      {
-        id: 3,
-        payee: {
-          id: "00009",
-          name: "Van Rey Security Services",
-          address: "Dao Tagbilaran City",
-        },
-        code: "DV-2023-01-0001",
-      },
-    ],
-  },
-  {
-    dateTime: new Date(),
-    transactions: [
-      {
-        id: 4,
-        payee: {
-          id: "00010",
-          name: "Panda Tea Garden",
-          address: "J.A Clarin Street",
-        },
-        code: "DV-2023-01-0001",
-      },
-    ],
-  },
-];
-
-const VoucherList: FC<Props> = ({}) => {
+const VoucherList: FC<Props> = ({ voucherTransactions }) => {
   return (
     <div className="pt-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

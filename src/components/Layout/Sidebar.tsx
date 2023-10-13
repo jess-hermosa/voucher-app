@@ -1,23 +1,12 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  Cog6ToothIcon,
-  FolderIcon,
-  GlobeAltIcon,
-  ServerIcon,
-  SignalIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/store";
 import { uiActions } from "@/store/ui";
-
-const navigation = [
-  { name: "Vouchers", href: "#", icon: FolderIcon, current: true },
-  { name: "Accounts", href: "#", icon: ServerIcon, current: false },
-  { name: "Payee", href: "#", icon: SignalIcon, current: false },
-  { name: "Employee", href: "#", icon: GlobeAltIcon, current: false },
-];
+import { menuActions } from "@/store/menu";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -25,7 +14,13 @@ function classNames(...classes: any) {
 
 const Sidebar = () => {
   const { isOpen } = useAppSelector((s) => s.ui);
+  const { menu } = useAppSelector((s) => s.menu);
   const dispatch = useDispatch();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    dispatch(menuActions.setSelectedMenu(pathname));
+  }, [pathname]);
 
   return (
     <>
@@ -94,28 +89,28 @@ const Sidebar = () => {
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
-                          {navigation.map((item) => (
+                          {menu.menuItem.map((item) => (
                             <li key={item.name}>
-                              <a
+                              <Link
                                 href={item.href}
                                 className={classNames(
-                                  item.current
+                                  item.active
                                     ? "bg-gray-50 text-indigo-600"
                                     : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
                                   "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                 )}
                               >
-                                <item.icon
+                                {/* <item.icon
                                   className={classNames(
-                                    item.current
+                                    item.active
                                       ? "text-indigo-600"
                                       : "text-gray-400 group-hover:text-indigo-600",
                                     "h-6 w-6 shrink-0"
                                   )}
                                   aria-hidden="true"
-                                />
+                                /> */}
                                 {item.name}
-                              </a>
+                              </Link>
                             </li>
                           ))}
                         </ul>
@@ -156,28 +151,28 @@ const Sidebar = () => {
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
-                  {navigation.map((item) => (
+                  {menu.menuItem.map((item) => (
                     <li key={item.name}>
-                      <a
+                      <Link
                         href={item.href}
                         className={classNames(
-                          item.current
+                          item.active
                             ? "bg-gray-50 text-indigo-600"
                             : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
                           "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                         )}
                       >
-                        <item.icon
+                        {/* <item.icon
                           className={classNames(
-                            item.current
+                            item.active
                               ? "text-indigo-600"
                               : "text-gray-400 group-hover:text-indigo-600",
                             "h-6 w-6 shrink-0"
                           )}
                           aria-hidden="true"
-                        />
+                        /> */}
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
