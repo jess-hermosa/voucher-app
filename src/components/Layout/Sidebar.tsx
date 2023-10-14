@@ -13,7 +13,7 @@ function classNames(...classes: any) {
 }
 
 const Sidebar = () => {
-  const { isOpen } = useAppSelector((s) => s.ui);
+  const { isOpen, overlay } = useAppSelector((s) => s.ui);
   const { menu } = useAppSelector((s) => s.menu);
   const dispatch = useDispatch();
   const pathname = usePathname();
@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <Transition.Root show={isOpen} as={Fragment}>
+      <Transition.Root show={isOpen && overlay === "sidebar"} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-50 lg:hidden"

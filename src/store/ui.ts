@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type Overlay = "sidebar";
+type Overlay = "sidebar | slideover";
 
 interface State {
   overlay: Overlay | null;

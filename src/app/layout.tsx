@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "@/store";
 import Sidebar from "@/components/Layout/Sidebar";
 import Header from "@/components/Layout/Header";
+import SlideOver from "@/components/Shared/SlideOver";
 
 export default function RootLayout({
   children,
@@ -17,6 +18,7 @@ export default function RootLayout({
         <Provider store={store}>
           <div>
             <Sidebar />
+            <SlideOver />
             <div className="lg:pl-72">
               <Header />
               <main className="py-10">
