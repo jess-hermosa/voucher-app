@@ -58,7 +58,7 @@ const voucherTransactions: VoucherTransactions[] = [
 const Voucher = () => {
   return (
     <>
-      <SectionHeader header={"Voucher"} />
+      <SectionHeader header={"Voucher"} link="/voucher/new" />
       <VoucherList voucherTransactions={voucherTransactions} />
     </>
   );

@@ -2,14 +2,17 @@
 
 import { uiActions } from "@/store/ui";
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
+import Link from "next/link";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 
 interface Props {
   header?: string;
+  link?: string;
+  hasForm?: boolean;
 }
 
-const SectionHeader: FC<Props> = ({ header }) => {
+const SectionHeader: FC<Props> = ({ header, link = "#", hasForm = true }) => {
   const dispatch = useDispatch();
 
   return (
@@ -22,14 +25,31 @@ const SectionHeader: FC<Props> = ({ header }) => {
             </h2>
           </div>
           <div className="mt-4 flex md:ml-4 md:mt-0">
-            <a
-              href="#"
-              className="ml-auto flex items-center gap-x-1 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={() => dispatch(uiActions.toggleSidebar("slideover"))}
-            >
-              <PlusSmallIcon className="-ml-1.5 h-5 w-5" aria-hidden="true" />
-              New {header}
-            </a>
+            {hasForm ? (
+              link === "#" ? (
+                <button
+                  className="ml-auto flex items-center gap-x-1 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  onClick={() => dispatch(uiActions.toggleSidebar("slideover"))}
+                >
+                  <PlusSmallIcon
+                    className="-ml-1.5 h-5 w-5"
+                    aria-hidden="true"
+                  />
+                  New {header}
+                </button>
+              ) : (
+                <Link
+                  href={link}
+                  className="ml-auto flex items-center gap-x-1 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  <PlusSmallIcon
+                    className="-ml-1.5 h-5 w-5"
+                    aria-hidden="true"
+                  />
+                  New {header}
+                </Link>
+              )
+            ) : null}
           </div>
         </div>
       </div>

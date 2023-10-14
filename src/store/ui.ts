@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type Overlay = "sidebar | slideover";
-
 interface State {
-  overlay: Overlay | null;
+  overlay: string | null;
   isOpen: boolean;
 }
 
@@ -20,7 +18,7 @@ export const uiSlice = createSlice({
       const isOpen = !!a.payload;
       state.isOpen = isOpen;
       if (isOpen) {
-        state.overlay = a.payload as Overlay;
+        state.overlay = a.payload;
       }
     },
   },
