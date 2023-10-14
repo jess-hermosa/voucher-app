@@ -18,7 +18,6 @@ export default function RootLayout({
         <Provider store={store}>
           <div>
             <Sidebar />
-            <SlideOver />
             <div className="lg:pl-72">
               <Header />
               <main className="py-10">

@@ -1,4 +1,8 @@
+"use client";
+
 import SectionHeader from "@/components/SectionHeader";
+import SlideOver from "@/components/Shared/SlideOver";
+import PayeeForm from "./payeeForm";
 const payees = [
   {
     id: "",
@@ -63,6 +67,8 @@ const Payee = () => {
           </div>
         </div>
       </div>
+
+      <PayeeForm />
     </>
   );
 };

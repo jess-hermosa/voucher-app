@@ -1,11 +1,13 @@
-import { FC, InputHTMLAttributes } from "react";
+import { FC, forwardRef, InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  subText: string;
+  subText?: string;
 }
 
-const Input: FC<Props> = ({ name, label, subText, className, ...rest }) => {
+const Input: FC<Props> = forwardRef<HTMLInputElement, Props>((props, ref) => {
+  const { name, label, subText, className, ...rest } = props;
+
   return (
     <div>
       <label
@@ -16,6 +18,7 @@ const Input: FC<Props> = ({ name, label, subText, className, ...rest }) => {
       </label>
       <div className="mt-2">
         <input
+          ref={ref}
           name={name}
           className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${className}`}
           {...rest}
@@ -26,6 +29,6 @@ const Input: FC<Props> = ({ name, label, subText, className, ...rest }) => {
       </p>
     </div>
   );
-};
+});
 
 export default Input;

@@ -1,5 +1,9 @@
+"use client";
+
 import SectionHeader from "@/components/SectionHeader";
+import SlideOver from "@/components/Shared/SlideOver";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
+import EmployeeForm from "./employeeForm";
 
 const employees = [
   {
@@ -88,6 +92,8 @@ const Employee = () => {
           </div>
         </div>
       </div>
+
+      <EmployeeForm />
     </>
   );
 };

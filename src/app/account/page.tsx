@@ -1,4 +1,8 @@
+"use client";
+
 import SectionHeader from "@/components/SectionHeader";
+import AccountForm from "./accountForm";
+
 const accounts = [
   {
     id: "",
@@ -68,6 +72,8 @@ const Account = () => {
           </div>
         </div>
       </div>
+
+      <AccountForm />
     </>
   );
 };
