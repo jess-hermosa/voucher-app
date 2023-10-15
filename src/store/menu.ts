@@ -35,9 +35,13 @@ export const menuSlice = createSlice({
           active: false,
         };
 
-      const selectedIndex = state.menu.menuItem.findIndex(
-        (x) => x.href === a.payload
-      );
+      const selectedIndex = state.menu.menuItem.findIndex((x) => {
+        const navs = a.payload.split("/").filter((x) => x !== "");
+        if (navs.length < 1) return true;
+
+        return navs.includes(x.href.replace("/", ""));
+      });
+
       if (selectedIndex !== -1)
         state.menu.menuItem[selectedIndex] = {
           ...state.menu.menuItem[selectedIndex],

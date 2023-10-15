@@ -1,8 +1,11 @@
 "use client";
 
+import { Employee } from "@/common/backend-types";
 import SectionHeader from "@/components/SectionHeader";
-import SlideOver from "@/components/Shared/SlideOver";
+import { uiActions } from "@/store/ui";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import EmployeeForm from "./employeeForm";
 
 const employees = [
@@ -19,6 +22,11 @@ const employees = [
 ];
 
 const Employee = () => {
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
+    null
+  );
+  const dispatch = useDispatch();
+
   return (
     <>
       <SectionHeader header={"Employee"} />
@@ -80,6 +88,10 @@ const Employee = () => {
                         <a
                           href="#"
                           className="text-indigo-600 hover:text-indigo-900"
+                          onClick={() => {
+                            setSelectedEmployee(employee);
+                            dispatch(uiActions.toggleSidebar("slideover"));
+                          }}
                         >
                           Edit<span className="sr-only">, {employee.name}</span>
                         </a>
@@ -93,7 +105,10 @@ const Employee = () => {
         </div>
       </div>
 
-      <EmployeeForm />
+      <EmployeeForm
+        selectedEmployee={selectedEmployee}
+        clearForm={() => setSelectedEmployee(null)}
+      />
     </>
   );
 };

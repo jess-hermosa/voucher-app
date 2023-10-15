@@ -1,4 +1,4 @@
-import { FC, Fragment } from "react";
+import { FC, Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch } from "react-redux";
@@ -9,19 +9,22 @@ interface Props {
   header: string;
   children: React.ReactNode;
   onSubmit: (onValid: any, onInvalid?: any) => any;
+  clearForm: () => void;
 }
 
-const SlideOver: FC<Props> = ({ header, children, onSubmit }) => {
+const SlideOver: FC<Props> = ({ header, children, onSubmit, clearForm }) => {
   const { isOpen, overlay } = useAppSelector((s) => s.ui);
   const dispatch = useDispatch();
 
+  const onClose = () => dispatch(uiActions.toggleSidebar(null));
+
+  useEffect(() => {
+    if (isOpen === false) clearForm();
+  }, [isOpen]);
+
   return (
     <Transition.Root show={isOpen && overlay === "slideover"} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-50 "
-        onClose={() => dispatch(uiActions.toggleSidebar(null))}
-      >
+      <Dialog as="div" className="relative z-50 " onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="transition-opacity ease-linear duration-300"
@@ -61,9 +64,7 @@ const SlideOver: FC<Props> = ({ header, children, onSubmit }) => {
                             <button
                               type="button"
                               className="relative rounded-md bg-indigo-700 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                              onClick={() =>
-                                dispatch(uiActions.toggleSidebar(null))
-                              }
+                              onClick={onClose}
                             >
                               <span className="absolute -inset-2.5" />
                               <span className="sr-only">Close panel</span>
@@ -85,7 +86,7 @@ const SlideOver: FC<Props> = ({ header, children, onSubmit }) => {
                       <button
                         type="button"
                         className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                        onClick={() => dispatch(uiActions.toggleSidebar(null))}
+                        onClick={onClose}
                       >
                         Cancel
                       </button>

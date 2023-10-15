@@ -1,8 +1,12 @@
 "use client";
 
+import { Payee } from "@/common/backend-types";
 import SectionHeader from "@/components/SectionHeader";
-import SlideOver from "@/components/Shared/SlideOver";
+import { uiActions } from "@/store/ui";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import PayeeForm from "./payeeForm";
+
 const payees = [
   {
     id: "",
@@ -12,6 +16,9 @@ const payees = [
 ];
 
 const Payee = () => {
+  const [selectedPayee, setSelectedPayee] = useState<Payee | null>(null);
+  const dispatch = useDispatch();
+
   return (
     <>
       <SectionHeader header={"Payee"} />
@@ -55,6 +62,10 @@ const Payee = () => {
                         <a
                           href="#"
                           className="text-indigo-600 hover:text-indigo-900"
+                          onClick={() => {
+                            setSelectedPayee(payee);
+                            dispatch(uiActions.toggleSidebar("slideover"));
+                          }}
                         >
                           Edit<span className="sr-only">, {payee.name}</span>
                         </a>
@@ -68,7 +79,10 @@ const Payee = () => {
         </div>
       </div>
 
-      <PayeeForm />
+      <PayeeForm
+        selectedPayee={selectedPayee}
+        clearForm={() => setSelectedPayee(null)}
+      />
     </>
   );
 };

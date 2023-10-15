@@ -1,7 +1,11 @@
 "use client";
 
 import SectionHeader from "@/components/SectionHeader";
+import { useState } from "react";
 import AccountForm from "./accountForm";
+import { Account } from "@/common/backend-types";
+import { useDispatch } from "react-redux";
+import { uiActions } from "@/store/ui";
 
 const accounts = [
   {
@@ -17,6 +21,9 @@ const accounts = [
 ];
 
 const Account = () => {
+  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
+  const dispatch = useDispatch();
+
   return (
     <>
       <SectionHeader header={"Account"} />
@@ -60,6 +67,10 @@ const Account = () => {
                         <a
                           href="#"
                           className="text-indigo-600 hover:text-indigo-900"
+                          onClick={() => {
+                            setSelectedAccount(account);
+                            dispatch(uiActions.toggleSidebar("slideover"));
+                          }}
                         >
                           Edit<span className="sr-only">, {account.name}</span>
                         </a>
@@ -73,7 +84,10 @@ const Account = () => {
         </div>
       </div>
 
-      <AccountForm />
+      <AccountForm
+        selectedAccount={selectedAccount}
+        clearForm={() => setSelectedAccount(null)}
+      />
     </>
   );
 };
