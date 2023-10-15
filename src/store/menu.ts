@@ -14,11 +14,11 @@ interface State {
 const initialState: State = {
   menu: {
     menuItem: [
-      { name: "Dashboard", href: "/", active: true },
-      { name: "Vouchers", href: "/voucher", active: false },
-      { name: "Accounts", href: "/account", active: false },
-      { name: "Payee", href: "/payee", active: false },
-      { name: "Employee", href: "/employee", active: false },
+      { name: "Dashboard", href: "/", icon: ServerIcon, active: true },
+      { name: "Vouchers", href: "/voucher", icon: ServerIcon, active: false },
+      { name: "Accounts", href: "/account", icon: ServerIcon, active: false },
+      { name: "Payee", href: "/payee", icon: ServerIcon, active: false },
+      { name: "Employee", href: "/employee", icon: ServerIcon, active: false },
     ],
   },
 };

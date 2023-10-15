@@ -1,38 +1,30 @@
 const projects = [
   {
     id: 1,
-    name: "Logo redesign",
-    description: "New logo and digital asset playbook.",
-    hours: "20.0",
-    rate: "$100.00",
-    price: "$4,000.00",
+    name: "Other supplies & materials expenses",
+    hours: "5020399000",
+    rate: "3,270.00",
+    price: "",
   },
-  // More projects...
+  {
+    id: 2,
+    name: "Due to BIR",
+    hours: "2020101000",
+    rate: "",
+    price: "175.18",
+  },
+  {
+    id: 3,
+    name: "Cash-MDS, Reg",
+    hours: "1010404000",
+    rate: "",
+    price: "3,094.82",
+  },
 ];
 
 const Voucher = () => {
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold leading-6 text-gray-900">
-            Invoice
-          </h1>
-          <p className="mt-2 text-sm text-gray-700">
-            For work completed from{" "}
-            <time dateTime="2022-08-01">August 1, 2022</time> to{" "}
-            <time dateTime="2022-08-31">August 31, 2022</time>.
-          </p>
-        </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <button
-            type="button"
-            className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Print
-          </button>
-        </div>
-      </div>
+    <div>
       <div className="-mx-4 mt-8 flow-root sm:mx-0">
         <table className="min-w-full">
           <colgroup>
@@ -47,25 +39,25 @@ const Voucher = () => {
                 scope="col"
                 className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
               >
-                Project
+                Account Name
+              </th>
+              <th
+                scope="col"
+                className="hidden px-3 py-3.5 text-center text-sm font-semibold text-gray-900 sm:table-cell"
+              >
+                UACS Code
               </th>
               <th
                 scope="col"
                 className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-900 sm:table-cell"
               >
-                Hours
-              </th>
-              <th
-                scope="col"
-                className="hidden px-3 py-3.5 text-right text-sm font-semibold text-gray-900 sm:table-cell"
-              >
-                Rate
+                Debit
               </th>
               <th
                 scope="col"
                 className="py-3.5 pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0"
               >
-                Price
+                Credit
               </th>
             </tr>
           </thead>
@@ -76,11 +68,8 @@ const Voucher = () => {
                   <div className="font-medium text-gray-900">
                     {project.name}
                   </div>
-                  <div className="mt-1 truncate text-gray-500">
-                    {project.description}
-                  </div>
                 </td>
-                <td className="hidden px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">
+                <td className="hidden px-3 py-5 text-center text-sm text-gray-500 sm:table-cell">
                   {project.hours}
                 </td>
                 <td className="hidden px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">

@@ -10,8 +10,8 @@ interface Props {
   formState: FormState<Account>;
 }
 
-const inputForm: FC<Props> = ({ name, label, register, formState }) => {
+const InputForm: FC<Props> = ({ name, label, register, formState }) => {
   return <Input {...register(name)} name={name} label={label} />;
 };
 
-export default inputForm;
+export default InputForm;

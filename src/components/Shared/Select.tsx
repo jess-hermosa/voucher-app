@@ -1,15 +1,11 @@
 import { FC, Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { Option } from "@/common/types";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
-
-type Option = {
-  id: string | number;
-  value: string;
-};
 
 interface Props {
   options: Option[];

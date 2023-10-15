@@ -10,6 +10,8 @@ const Button: FC<Props> = ({
   className,
   onClick,
   layout,
+  type,
+  ...rest
 }) => {
   let css = {
     layout:
@@ -22,10 +24,11 @@ const Button: FC<Props> = ({
 
   return (
     <button
-      type="button"
+      type={type}
       className={`rounded-md px-3 py-2 text-sm font-semibold shadow-sm ${css.layout} ${className}`}
       onClick={onClick}
       disabled={disabled}
+      {...rest}
     >
       <span>{children}</span>
     </button>
