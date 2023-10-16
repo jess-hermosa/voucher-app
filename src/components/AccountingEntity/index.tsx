@@ -1,3 +1,5 @@
+import { XMarkIcon } from "@heroicons/react/24/outline";
+
 const projects = [
   {
     id: 1,
@@ -59,6 +61,9 @@ const Voucher = () => {
               >
                 Credit
               </th>
+              <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-3">
+                <span className="sr-only">Edit</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -78,10 +83,18 @@ const Voucher = () => {
                 <td className="py-5 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-0">
                   {project.price}
                 </td>
+                <td className="relative whitespace-nowrap py-4 pl-10 pr-4 text-right text-sm font-medium sm:pr-3">
+                  <a href="#" className="">
+                    <XMarkIcon
+                      className="text-indigo-600 hover:text-indigo-900 h-6 w-6 shrink-0"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </td>
               </tr>
             ))}
           </tbody>
-          <tfoot>
+          {/* <tfoot>
             <tr>
               <th
                 scope="row"
@@ -136,7 +149,7 @@ const Voucher = () => {
                 $10,560.00
               </td>
             </tr>
-          </tfoot>
+          </tfoot> */}
         </table>
       </div>
     </div>

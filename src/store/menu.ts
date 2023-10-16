@@ -1,10 +1,11 @@
-import { Menu, MenuItem } from "@/common/types";
+import { Menu } from "@/common/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   FolderIcon,
-  GlobeAltIcon,
-  ServerIcon,
-  SignalIcon,
+  UserIcon,
+  RectangleGroupIcon,
+  BriefcaseIcon,
+  ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 
 interface State {
@@ -14,11 +15,21 @@ interface State {
 const initialState: State = {
   menu: {
     menuItem: [
-      { name: "Dashboard", href: "/", icon: ServerIcon, active: true },
-      { name: "Vouchers", href: "/voucher", icon: ServerIcon, active: false },
-      { name: "Accounts", href: "/account", icon: ServerIcon, active: false },
-      { name: "Payee", href: "/payee", icon: ServerIcon, active: false },
-      { name: "Employee", href: "/employee", icon: ServerIcon, active: false },
+      { name: "Dashboard", href: "/", icon: RectangleGroupIcon, active: true },
+      { name: "Vouchers", href: "/voucher", icon: FolderIcon, active: false },
+      {
+        name: "Accounts",
+        href: "/account",
+        icon: ClipboardDocumentListIcon,
+        active: false,
+      },
+      { name: "Payee", href: "/payee", icon: UserIcon, active: false },
+      {
+        name: "Employee",
+        href: "/employee",
+        icon: BriefcaseIcon,
+        active: false,
+      },
     ],
   },
 };
