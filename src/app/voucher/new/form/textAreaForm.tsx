@@ -1,13 +1,13 @@
-import { Voucher } from "@/common/backend-types";
+import { VoucherForm } from "@/common/types";
 import TextArea from "@/components/Shared/TextArea";
 import { FC } from "react";
 import { FormState, UseFormRegister } from "react-hook-form";
 
 interface Props {
-  name: keyof Voucher;
+  name: keyof VoucherForm;
   label: string;
-  register: UseFormRegister<Voucher>;
-  formState: FormState<Voucher>;
+  register: UseFormRegister<VoucherForm>;
+  formState: FormState<VoucherForm>;
 }
 
 const TextAreaForm: FC<Props> = ({ name, label, register, formState }) => {

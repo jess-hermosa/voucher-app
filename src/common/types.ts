@@ -1,4 +1,9 @@
-import { ArchivedVoucher } from "./backend-types";
+import {
+  ArchivedVoucher,
+  Employee,
+  Payee,
+  VoucherAccount,
+} from "./backend-types";
 
 export interface VoucherTransactions {
   dateTime: Date;
@@ -20,3 +25,22 @@ export type Option = {
   id: string | number;
   value: string;
 };
+
+export interface VoucherForm {
+  id: string;
+  code: string;
+  date: Date;
+  modeOfPayment: number;
+  responsibilityCenter: number;
+  certifiedBy: Employee;
+  payee: Payee;
+  particulars: string;
+  accountEntities: VoucherAccount[];
+  signatory1: Employee;
+  signatory2: Employee;
+  taxType: number;
+  percentage1: number;
+  percentage2: number;
+  hasFixedGrossAmount: boolean;
+  grossAmount: number;
+}

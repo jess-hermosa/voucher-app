@@ -1,13 +1,18 @@
 "use client";
 
 import { Account, Employee, Payee, Voucher } from "@/common/backend-types";
+import { VoucherForm } from "@/common/types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Select from "@/components/Shared/Select";
-import ComboboxSelect from "@/components/Shared/ComboboxSelect";
-import TextArea from "@/components/Shared/TextArea";
 import AccountingEntity from "@/components/AccountingEntity";
+import ComboboxForm from "./form/comboBoxForm";
+import { FC } from "react";
+import SelectForm from "./form/selectForm";
+import TextAreaForm from "./form/textAreaForm";
+import InputForm from "./form/inputForm";
+import CheckboxForm from "./form/checkBoxForm";
+import ComboboxSelect from "@/components/Shared/ComboboxSelect";
 import Input from "@/components/Shared/Input";
-import Checkbox from "@/components/Shared/Checkbox";
+import Select from "@/components/Shared/Select";
 
 interface Props {
   account: Account[];
@@ -15,22 +20,27 @@ interface Props {
   employee: Employee[];
 }
 
-const VoucherForm = () => {
-  const form = useForm<Voucher>();
+const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
+  const form = useForm<VoucherForm>();
 
-  const options = [
-    { id: 1, value: "test1" },
-    { id: 2, value: "test2" },
-    { id: 3, value: "test3" },
-    { id: 4, value: "test4" },
+  const taxTypeOptions = [
+    { id: 0, value: "None" },
+    { id: 1, value: "Goods" },
+    { id: 2, value: "Services" },
+    { id: 3, value: "Straight" },
+    { id: 4, value: "Custom" },
   ];
 
-  const tax = [
-    { id: 1, value: "None" },
-    { id: 2, value: "Goods" },
-    { id: 3, value: "Services" },
-    { id: 4, value: "Straight" },
-    { id: 5, value: "Custom" },
+  const modeOfPaymentOptions = [
+    { id: 0, value: "MDS" },
+    { id: 1, value: "Commercial" },
+    { id: 2, value: "ADA" },
+    { id: 4, value: "Others" },
+  ];
+
+  const responsibilityCenterOptions = [
+    { id: 0, value: "MOOE" },
+    { id: 1, value: "PS" },
   ];
 
   const onSubmit: SubmitHandler<Voucher> = (data) => {
@@ -59,20 +69,22 @@ const VoucherForm = () => {
             </div>
 
             <div className="sm:col-span-3">
-              <ComboboxSelect
+              <ComboboxForm
+                name="payee"
                 label="Payee"
-                options={options}
-                selectedOption={{ id: 1, value: "test1" }}
-                onChange={() => {}}
+                options={payee.map((p) => {
+                  return { id: p.id, value: p.name };
+                })}
+                {...form}
               />
             </div>
 
             <div className="sm:col-span-2">
-              <Select
+              <SelectForm
+                name="modeOfPayment"
                 label="Mode of payment"
-                options={options}
-                selectedOption={{ id: 1, value: "test1" }}
-                onChange={() => {}}
+                options={modeOfPaymentOptions}
+                {...form}
               />
             </div>
 
@@ -86,45 +98,50 @@ const VoucherForm = () => {
             </div>
 
             <div className="sm:col-span-2">
-              <Select
+              <SelectForm
+                name="responsibilityCenter"
                 label="Responsibility center"
-                options={options}
-                selectedOption={{ id: 1, value: "test1" }}
-                onChange={() => {}}
+                options={responsibilityCenterOptions}
+                {...form}
               />
             </div>
 
             <div className="sm:col-span-5">
-              <TextArea label="Particulars" />
+              <TextAreaForm name="particulars" label="Particulars" {...form} />
             </div>
 
             <div className="col-span-full">
-              <Checkbox
+              <CheckboxForm
+                name="hasFixedGrossAmount"
                 label="Custom gross amount"
-                name="hasFixedGross"
                 description="Enable this if you want to specify the gross amount to be calculated in tax"
+                {...form}
               />
             </div>
 
             <div className="sm:col-span-2">
-              <Select
+              <SelectForm
+                name="taxType"
                 label="Tax type"
-                options={tax}
-                selectedOption={{ id: 1, value: "None" }}
-                onChange={() => {}}
+                options={taxTypeOptions}
+                {...form}
               />
             </div>
 
             <div className="sm:col-span-1">
-              <Input label="Custom Gross Amount" />
+              <InputForm
+                name="grossAmount"
+                label="Custom Gross Amount"
+                {...form}
+              />
             </div>
 
             <div className="sm:col-span-1">
-              <Input label="Percentage" />
+              <InputForm name="percentage1" label="Percentage" {...form} />
             </div>
 
             <div className="sm:col-span-1">
-              <Input label="Percentage" />
+              <InputForm name="percentage2" label="Percentage" {...form} />
             </div>
           </div>
         </div>
@@ -135,28 +152,34 @@ const VoucherForm = () => {
           </h2>
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-2">
-              <ComboboxSelect
+              <ComboboxForm
+                name=""
                 label="Certified by"
-                options={options}
-                selectedOption={{ id: 1, value: "test1" }}
-                onChange={() => {}}
+                options={employee.map((p) => {
+                  return { id: p.id, value: p.name };
+                })}
+                {...form}
               />
             </div>
             <div className="sm:col-span-2">
-              <ComboboxSelect
+              <ComboboxForm
+                name="signatory1"
                 label="Accounting head"
-                options={options}
-                selectedOption={{ id: 1, value: "test1" }}
-                onChange={() => {}}
+                options={employee.map((p) => {
+                  return { id: p.id, value: p.name };
+                })}
+                {...form}
               />
             </div>
 
             <div className="sm:col-span-2">
-              <ComboboxSelect
+              <ComboboxForm
+                name="signatory2"
                 label="PARPO"
-                options={options}
-                selectedOption={{ id: 1, value: "test1" }}
-                onChange={() => {}}
+                options={employee.map((p) => {
+                  return { id: p.id, value: p.name };
+                })}
+                {...form}
               />
             </div>
           </div>
@@ -170,7 +193,9 @@ const VoucherForm = () => {
             <div className="sm:col-span-4">
               <ComboboxSelect
                 label="Account"
-                options={options}
+                options={account.map((p) => {
+                  return { id: p.id, value: p.name };
+                })}
                 selectedOption={{ id: 1, value: "test1" }}
                 onChange={() => {}}
               />
