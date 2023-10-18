@@ -1,11 +1,17 @@
 "use client";
 
-import { Account, Employee, Payee, Voucher } from "@/common/backend-types";
-import { VoucherForm } from "@/common/types";
+import {
+  Account,
+  Employee,
+  Payee,
+  Voucher,
+  VoucherAccount,
+} from "@/common/backend-types";
+import { Option, VoucherForm } from "@/common/types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import AccountingEntity from "@/components/AccountingEntity";
 import ComboboxForm from "./form/comboBoxForm";
-import { FC } from "react";
+import { FC, useState } from "react";
 import SelectForm from "./form/selectForm";
 import TextAreaForm from "./form/textAreaForm";
 import InputForm from "./form/inputForm";
@@ -21,6 +27,10 @@ interface Props {
 }
 
 const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
+  const [accountEntities, setAccountEntities] = useState<
+    VoucherAccount[] | null
+  >(null);
+  const [selectedAccount, setSelectedAccount] = useState<Option | null>(null);
   const form = useForm<VoucherForm>();
 
   const taxTypeOptions = [
@@ -43,8 +53,46 @@ const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
     { id: 1, value: "PS" },
   ];
 
-  const onSubmit: SubmitHandler<Voucher> = (data) => {
-    console.log("data: ", data);
+  const onValueChange = (selected: Option) => {};
+
+  const onSubmit: SubmitHandler<VoucherForm> = (data) => {
+    const voucher: Voucher = {
+      id: "",
+      code: "",
+      date: new Date(),
+      modeOfPayment: 0,
+      responsibilityCenter: 0,
+      certifiedBy: {
+        id: data.certifiedBy.id,
+        name: "",
+        position: "",
+      },
+      payee: {
+        id: data.certifiedBy.id,
+        name: "",
+        address: "",
+      },
+      particulars: "",
+      accountEntities: accountEntities || [],
+      tax: {
+        id: 0,
+        type: 0,
+        percentage1: 0,
+        percentage2: 0,
+        hasFixedGrossAmount: false,
+        grossAmount: 0,
+      },
+      signatory1: {
+        id: data.certifiedBy.id,
+        name: "",
+        position: "",
+      },
+      signatory2: {
+        id: data.certifiedBy.id,
+        name: "",
+        position: "",
+      },
+    };
   };
 
   return (
@@ -196,8 +244,8 @@ const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
                 options={account.map((p) => {
                   return { id: p.id, value: p.name };
                 })}
-                selectedOption={{ id: 1, value: "test1" }}
-                onChange={() => {}}
+                selectedOption={selectedAccount || { id: 0, value: "Select" }}
+                onChange={(account: Option) => setSelectedAccount(account)}
               />
             </div>
 
@@ -214,7 +262,7 @@ const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
                   { id: 3, value: "Credit" },
                 ]}
                 selectedOption={{ id: 1, value: "-Select-" }}
-                onChange={() => {}}
+                onChange={(selected: Option) => onValueChange(selected)}
               />
             </div>
           </div>

@@ -1,3 +1,4 @@
+import { Account, Employee, Payee } from "@/common/backend-types";
 import SectionHeader from "@/components/SectionHeader";
 import VoucherForm from "./voucherForm";
 
@@ -15,11 +16,15 @@ async function getData() {
 }
 
 const NewVoucher = () => {
+  const account: Account[] = [];
+  const payee: Payee[] = [];
+  const employee: Employee[] = [];
+
   return (
     <>
       <SectionHeader header="Disbursement voucher" hasForm={false} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <VoucherForm />
+        <VoucherForm account={account} payee={payee} employee={employee} />
       </div>
     </>
   );
