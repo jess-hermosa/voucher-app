@@ -32,12 +32,12 @@ export interface VoucherForm {
   date: Date;
   modeOfPayment: number;
   responsibilityCenter: number;
-  certifiedBy: Employee;
-  payee: Payee;
+  certifiedBy: Option;
+  payee: Option;
   particulars: string;
   accountEntities: VoucherAccount[];
-  signatory1: Employee;
-  signatory2: Employee;
+  signatory1: Option;
+  signatory2: Option;
   taxType: number;
   percentage1: number;
   percentage2: number;

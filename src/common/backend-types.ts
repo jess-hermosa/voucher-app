@@ -4,13 +4,13 @@ export interface Voucher {
   date: Date;
   modeOfPayment: number;
   responsibilityCenter: number;
-  certifiedBy: Employee;
-  payee: Payee;
+  certifiedBy: Employee | null;
+  payee: Payee | null;
   particulars: string;
   accountEntities: VoucherAccount[];
   tax: Tax;
-  signatory1: Employee;
-  signatory2: Employee;
+  signatory1: Employee | null;
+  signatory2: Employee | null;
 }
 
 export interface Employee {

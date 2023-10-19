@@ -21,12 +21,13 @@ import Input from "@/components/Shared/Input";
 import Select from "@/components/Shared/Select";
 
 interface Props {
-  account: Account[];
-  payee: Payee[];
-  employee: Employee[];
+  voucher: Voucher;
+  accounts: Account[];
+  payees: Payee[];
+  employees: Employee[];
 }
 
-const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
+const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
   const [accountEntities, setAccountEntities] = useState<
     VoucherAccount[] | null
   >(null);
@@ -56,42 +57,35 @@ const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
   const onValueChange = (selected: Option) => {};
 
   const onSubmit: SubmitHandler<VoucherForm> = (data) => {
-    const voucher: Voucher = {
-      id: "",
-      code: "",
-      date: new Date(),
-      modeOfPayment: 0,
-      responsibilityCenter: 0,
-      certifiedBy: {
-        id: data.certifiedBy.id,
-        name: "",
-        position: "",
-      },
-      payee: {
-        id: data.certifiedBy.id,
-        name: "",
-        address: "",
-      },
+    const certifiedby: Employee | null =
+      employees.find((x) => x.id === data.payee.id.toString()) || null;
+    const payee: Payee | null =
+      payees.find((x) => x.id === data.payee.id.toString()) || null;
+    const signatory1: Employee | null =
+      employees.find((x) => x.id === data.signatory1.id.toString()) || null;
+    const signatory2: Employee | null =
+      employees.find((x) => x.id === data.signatory2.id.toString()) || null;
+
+    const updatedVoucher: Voucher = {
+      id: voucher.id,
+      code: voucher.code,
+      date: voucher.date || new Date(),
+      modeOfPayment: data.modeOfPayment,
+      responsibilityCenter: data.responsibilityCenter,
+      certifiedBy: certifiedby,
+      payee: payee,
       particulars: "",
       accountEntities: accountEntities || [],
       tax: {
-        id: 0,
-        type: 0,
-        percentage1: 0,
-        percentage2: 0,
-        hasFixedGrossAmount: false,
-        grossAmount: 0,
+        id: voucher.tax.id,
+        type: data.taxType,
+        percentage1: data.percentage1,
+        percentage2: data.percentage2,
+        hasFixedGrossAmount: data.hasFixedGrossAmount,
+        grossAmount: data.grossAmount,
       },
-      signatory1: {
-        id: data.certifiedBy.id,
-        name: "",
-        position: "",
-      },
-      signatory2: {
-        id: data.certifiedBy.id,
-        name: "",
-        position: "",
-      },
+      signatory1: signatory1,
+      signatory2: signatory2,
     };
   };
 
@@ -105,7 +99,7 @@ const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
                 Disbursement Voucher No:
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-600">
-                DV-2023-01-0001
+                {voucher.code}
               </p>
             </div>
 
@@ -113,14 +107,16 @@ const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
               <h2 className="text-base font-semibold leading-7 text-gray-900">
                 Date:
               </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-600">03/03/22</p>
+              <p className="mt-1 text-sm leading-6 text-gray-600">
+                {voucher.date.toString()}
+              </p>
             </div>
 
             <div className="sm:col-span-3">
               <ComboboxForm
                 name="payee"
                 label="Payee"
-                options={payee.map((p) => {
+                options={payees.map((p) => {
                   return { id: p.id, value: p.name };
                 })}
                 {...form}
@@ -203,7 +199,7 @@ const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
               <ComboboxForm
                 name=""
                 label="Certified by"
-                options={employee.map((p) => {
+                options={employees.map((p) => {
                   return { id: p.id, value: p.name };
                 })}
                 {...form}
@@ -213,7 +209,7 @@ const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
               <ComboboxForm
                 name="signatory1"
                 label="Accounting head"
-                options={employee.map((p) => {
+                options={employees.map((p) => {
                   return { id: p.id, value: p.name };
                 })}
                 {...form}
@@ -224,7 +220,7 @@ const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
               <ComboboxForm
                 name="signatory2"
                 label="PARPO"
-                options={employee.map((p) => {
+                options={employees.map((p) => {
                   return { id: p.id, value: p.name };
                 })}
                 {...form}
@@ -241,7 +237,7 @@ const VoucherForm: FC<Props> = ({ account, payee, employee }) => {
             <div className="sm:col-span-4">
               <ComboboxSelect
                 label="Account"
-                options={account.map((p) => {
+                options={accounts.map((p) => {
                   return { id: p.id, value: p.name };
                 })}
                 selectedOption={selectedAccount || { id: 0, value: "Select" }}
