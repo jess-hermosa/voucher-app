@@ -10,7 +10,7 @@ function classNames(...classes: any) {
 interface Props {
   options: Option[];
   label: string;
-  selectedOption: Option;
+  selectedOption: Option | null;
   onChange: (value: Option) => void;
 }
 

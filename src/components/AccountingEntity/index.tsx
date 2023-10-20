@@ -1,30 +1,13 @@
+import { VoucherAccount } from "@/common/backend-types";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { FC } from "react";
 
-const projects = [
-  {
-    id: 1,
-    name: "Other supplies & materials expenses",
-    hours: "5020399000",
-    rate: "3,270.00",
-    price: "",
-  },
-  {
-    id: 2,
-    name: "Due to BIR",
-    hours: "2020101000",
-    rate: "",
-    price: "175.18",
-  },
-  {
-    id: 3,
-    name: "Cash-MDS, Reg",
-    hours: "1010404000",
-    rate: "",
-    price: "3,094.82",
-  },
-];
+interface Props {
+  accountEntities: VoucherAccount[];
+  onRemove: (index: number) => void;
+}
 
-const Voucher = () => {
+const Voucher: FC<Props> = ({ accountEntities, onRemove }) => {
   return (
     <div>
       <div className="-mx-4 mt-8 flow-root sm:mx-0">
@@ -67,24 +50,24 @@ const Voucher = () => {
             </tr>
           </thead>
           <tbody>
-            {projects.map((project) => (
-              <tr key={project.id} className="border-b border-gray-200">
+            {accountEntities.map((entity, index) => (
+              <tr key={entity.id} className="border-b border-gray-200">
                 <td className="max-w-0 py-5 pl-4 pr-3 text-sm sm:pl-0">
                   <div className="font-medium text-gray-900">
-                    {project.name}
+                    {entity.account?.name}
                   </div>
                 </td>
                 <td className="hidden px-3 py-5 text-center text-sm text-gray-500 sm:table-cell">
-                  {project.hours}
+                  {entity.account?.code}
                 </td>
                 <td className="hidden px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">
-                  {project.rate}
+                  {entity.debit}
                 </td>
                 <td className="py-5 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-0">
-                  {project.price}
+                  {entity.credit}
                 </td>
                 <td className="relative whitespace-nowrap py-4 pl-10 pr-4 text-right text-sm font-medium sm:pr-3">
-                  <a href="#" className="">
+                  <a href="#" className="" onClick={() => onRemove(index)}>
                     <XMarkIcon
                       className="text-indigo-600 hover:text-indigo-900 h-6 w-6 shrink-0"
                       aria-hidden="true"

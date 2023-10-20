@@ -49,9 +49,9 @@ export interface Tax {
 
 export interface VoucherAccount {
   id: number;
-  account: Account;
-  debit: number;
-  credit: number;
+  account: Account | null;
+  debit: number | null;
+  credit: number | null;
 }
 
 export interface ArchivedVoucher {

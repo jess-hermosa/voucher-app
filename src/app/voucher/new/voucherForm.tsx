@@ -19,12 +19,18 @@ import CheckboxForm from "./form/checkBoxForm";
 import ComboboxSelect from "@/components/Shared/ComboboxSelect";
 import Input from "@/components/Shared/Input";
 import Select from "@/components/Shared/Select";
+import {
+  entityTypeOptions,
+  modeOfPaymentOptions,
+  responsibilityCenterOptions,
+  taxTypeOptions,
+} from "@/common/constant-fields";
 
 interface Props {
   voucher: Voucher;
-  accounts: Account[];
-  payees: Payee[];
-  employees: Employee[];
+  accounts: Map<string, Account>;
+  payees: Map<string, Payee>;
+  employees: Map<string, Employee>;
 }
 
 const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
@@ -32,48 +38,77 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
     VoucherAccount[] | null
   >(null);
   const [selectedAccount, setSelectedAccount] = useState<Option | null>(null);
+  const [amount, setAmount] = useState<number>(0);
+
+  const onValueChange = (selected: Option) => {
+    if (!selectedAccount || amount < 1 || selected.id === 1) return;
+    let entities = [...(accountEntities || [])];
+
+    if (selected.id === 2) {
+      entities.push({
+        id: accountEntities?.length || 0,
+        account: accounts.get(selectedAccount.id.toString()) || null,
+        debit: amount,
+        credit: null,
+      });
+      setAccountEntities(entities);
+      return;
+    }
+
+    entities.push({
+      id: accountEntities?.length || 0,
+      account: accounts.get(selectedAccount.id.toString()) || null,
+      debit: null,
+      credit: amount,
+    });
+    setAccountEntities(entities);
+  };
+
+  const employeesOption = () => {
+    let options: Option[] = [];
+    employees.forEach((p) => {
+      options.push({ id: p.id, value: p.name });
+    });
+
+    return options;
+  };
+
+  const payeesOption = () => {
+    let options: Option[] = [];
+    payees.forEach((p) => {
+      options.push({ id: p.id, value: p.name });
+    });
+
+    return options;
+  };
+
+  const accountsOption = () => {
+    let options: Option[] = [];
+    accounts.forEach((p) => {
+      options.push({ id: p.id, value: p.code });
+    });
+
+    return options;
+  };
+
+  const onEntityRemove = (index: number) => {
+    const entities = [...(accountEntities || [])];
+    entities?.splice(index, 1);
+
+    setAccountEntities([...entities]);
+  };
+
   const form = useForm<VoucherForm>();
 
-  const taxTypeOptions = [
-    { id: 0, value: "None" },
-    { id: 1, value: "Goods" },
-    { id: 2, value: "Services" },
-    { id: 3, value: "Straight" },
-    { id: 4, value: "Custom" },
-  ];
-
-  const modeOfPaymentOptions = [
-    { id: 0, value: "MDS" },
-    { id: 1, value: "Commercial" },
-    { id: 2, value: "ADA" },
-    { id: 4, value: "Others" },
-  ];
-
-  const responsibilityCenterOptions = [
-    { id: 0, value: "MOOE" },
-    { id: 1, value: "PS" },
-  ];
-
-  const onValueChange = (selected: Option) => {};
-
   const onSubmit: SubmitHandler<VoucherForm> = (data) => {
-    const certifiedby: Employee | null =
-      employees.find((x) => x.id === data.payee.id.toString()) || null;
-    const payee: Payee | null =
-      payees.find((x) => x.id === data.payee.id.toString()) || null;
-    const signatory1: Employee | null =
-      employees.find((x) => x.id === data.signatory1.id.toString()) || null;
-    const signatory2: Employee | null =
-      employees.find((x) => x.id === data.signatory2.id.toString()) || null;
-
     const updatedVoucher: Voucher = {
       id: voucher.id,
       code: voucher.code,
       date: voucher.date || new Date(),
       modeOfPayment: data.modeOfPayment,
       responsibilityCenter: data.responsibilityCenter,
-      certifiedBy: certifiedby,
-      payee: payee,
+      certifiedBy: employees.get(data.certifiedBy.id.toString()) || null,
+      payee: payees.get(data.payee.id.toString()) || null,
       particulars: "",
       accountEntities: accountEntities || [],
       tax: {
@@ -84,8 +119,8 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
         hasFixedGrossAmount: data.hasFixedGrossAmount,
         grossAmount: data.grossAmount,
       },
-      signatory1: signatory1,
-      signatory2: signatory2,
+      signatory1: employees.get(data.signatory1.id.toString()) || null,
+      signatory2: employees.get(data.signatory2.id.toString()) || null,
     };
   };
 
@@ -116,9 +151,7 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
               <ComboboxForm
                 name="payee"
                 label="Payee"
-                options={payees.map((p) => {
-                  return { id: p.id, value: p.name };
-                })}
+                options={payeesOption()}
                 {...form}
               />
             </div>
@@ -137,7 +170,8 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
                 Address:
               </h2>
               <p className="mt-1 text-sm leading-6 text-gray-600">
-                Dao Tagbilaran City
+                {payees.get(form.getValues().payee?.id.toString())?.address ||
+                  ""}
               </p>
             </div>
 
@@ -177,15 +211,26 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
                 name="grossAmount"
                 label="Custom Gross Amount"
                 {...form}
+                disabled
               />
             </div>
 
             <div className="sm:col-span-1">
-              <InputForm name="percentage1" label="Percentage" {...form} />
+              <InputForm
+                name="percentage1"
+                label="Percentage"
+                {...form}
+                disabled
+              />
             </div>
 
             <div className="sm:col-span-1">
-              <InputForm name="percentage2" label="Percentage" {...form} />
+              <InputForm
+                name="percentage2"
+                label="Percentage"
+                {...form}
+                disabled
+              />
             </div>
           </div>
         </div>
@@ -199,9 +244,7 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
               <ComboboxForm
                 name=""
                 label="Certified by"
-                options={employees.map((p) => {
-                  return { id: p.id, value: p.name };
-                })}
+                options={employeesOption()}
                 {...form}
               />
             </div>
@@ -209,9 +252,7 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
               <ComboboxForm
                 name="signatory1"
                 label="Accounting head"
-                options={employees.map((p) => {
-                  return { id: p.id, value: p.name };
-                })}
+                options={employeesOption()}
                 {...form}
               />
             </div>
@@ -220,9 +261,7 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
               <ComboboxForm
                 name="signatory2"
                 label="PARPO"
-                options={employees.map((p) => {
-                  return { id: p.id, value: p.name };
-                })}
+                options={employeesOption()}
                 {...form}
               />
             </div>
@@ -237,33 +276,34 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
             <div className="sm:col-span-4">
               <ComboboxSelect
                 label="Account"
-                options={accounts.map((p) => {
-                  return { id: p.id, value: p.name };
-                })}
-                selectedOption={selectedAccount || { id: 0, value: "Select" }}
+                options={accountsOption()}
+                selectedOption={selectedAccount}
                 onChange={(account: Option) => setSelectedAccount(account)}
               />
             </div>
 
             <div className="sm:col-span-1">
-              <Input label="Amount" />
+              <Input
+                label="Amount"
+                value={amount}
+                onChange={(e) => setAmount(parseInt(e.target.value))}
+              />
             </div>
 
             <div className="sm:col-span-1">
               <Select
                 label="Add as"
-                options={[
-                  { id: 1, value: "-Select-" },
-                  { id: 2, value: "Debit" },
-                  { id: 3, value: "Credit" },
-                ]}
+                options={entityTypeOptions}
                 selectedOption={{ id: 1, value: "-Select-" }}
                 onChange={(selected: Option) => onValueChange(selected)}
               />
             </div>
           </div>
 
-          <AccountingEntity />
+          <AccountingEntity
+            accountEntities={accountEntities || []}
+            onRemove={onEntityRemove}
+          />
         </div>
       </div>
 

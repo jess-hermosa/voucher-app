@@ -8,10 +8,19 @@ interface Props {
   label: string;
   register: UseFormRegister<VoucherForm>;
   formState: FormState<VoucherForm>;
+  disabled?: boolean;
 }
 
-const InputForm: FC<Props> = ({ name, label, register, formState }) => {
-  return <Input {...register(name)} name={name} label={label} />;
+const InputForm: FC<Props> = ({
+  name,
+  label,
+  register,
+  formState,
+  disabled,
+}) => {
+  return (
+    <Input {...register(name)} name={name} label={label} disabled={disabled} />
+  );
 };
 
 export default InputForm;
