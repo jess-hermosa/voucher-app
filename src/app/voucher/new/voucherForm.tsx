@@ -52,16 +52,18 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
         credit: null,
       });
       setAccountEntities(entities);
-      return;
+    } else {
+      entities.push({
+        id: accountEntities?.length || 0,
+        account: accounts.get(selectedAccount.id.toString()) || null,
+        debit: null,
+        credit: amount,
+      });
+      setAccountEntities(entities);
     }
 
-    entities.push({
-      id: accountEntities?.length || 0,
-      account: accounts.get(selectedAccount.id.toString()) || null,
-      debit: null,
-      credit: amount,
-    });
-    setAccountEntities(entities);
+    setSelectedAccount(null);
+    setAmount(0);
   };
 
   const employeesOption = () => {
