@@ -7,24 +7,12 @@ import {
   Voucher,
   VoucherAccount,
 } from "@/common/backend-types";
-import { Option, VoucherForm } from "@/common/types";
+import { VoucherForm } from "@/common/types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import AccountingEntity from "@/components/AccountingEntity";
-import ComboboxForm from "./form/comboBoxForm";
 import { FC, useState } from "react";
-import SelectForm from "./form/selectForm";
-import TextAreaForm from "./form/textAreaForm";
-import InputForm from "./form/inputForm";
-import CheckboxForm from "./form/checkBoxForm";
-import ComboboxSelect from "@/components/Shared/ComboboxSelect";
-import Input from "@/components/Shared/Input";
-import Select from "@/components/Shared/Select";
-import {
-  entityTypeOptions,
-  modeOfPaymentOptions,
-  responsibilityCenterOptions,
-  taxTypeOptions,
-} from "@/common/constant-fields";
+import PayeeInfoSection from "./sections/payeeInfoSection";
+import SignatoriesSection from "./sections/signatoriesSection";
+import AccountingEntitiesSection from "./sections/accountingEntitiesSection";
 
 interface Props {
   voucher: Voucher;
@@ -37,68 +25,6 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
   const [accountEntities, setAccountEntities] = useState<
     VoucherAccount[] | null
   >(null);
-  const [selectedAccount, setSelectedAccount] = useState<Option | null>(null);
-  const [amount, setAmount] = useState<number>(0);
-
-  const onValueChange = (selected: Option) => {
-    if (!selectedAccount || amount < 1 || selected.id === 1) return;
-    let entities = [...(accountEntities || [])];
-
-    if (selected.id === 2) {
-      entities.push({
-        id: accountEntities?.length || 0,
-        account: accounts.get(selectedAccount.id.toString()) || null,
-        debit: amount,
-        credit: null,
-      });
-      setAccountEntities(entities);
-    } else {
-      entities.push({
-        id: accountEntities?.length || 0,
-        account: accounts.get(selectedAccount.id.toString()) || null,
-        debit: null,
-        credit: amount,
-      });
-      setAccountEntities(entities);
-    }
-
-    setSelectedAccount(null);
-    setAmount(0);
-  };
-
-  const employeesOption = () => {
-    let options: Option[] = [];
-    employees.forEach((p) => {
-      options.push({ id: p.id, value: p.name });
-    });
-
-    return options;
-  };
-
-  const payeesOption = () => {
-    let options: Option[] = [];
-    payees.forEach((p) => {
-      options.push({ id: p.id, value: p.name });
-    });
-
-    return options;
-  };
-
-  const accountsOption = () => {
-    let options: Option[] = [];
-    accounts.forEach((p) => {
-      options.push({ id: p.id, value: p.code });
-    });
-
-    return options;
-  };
-
-  const onEntityRemove = (index: number) => {
-    const entities = [...(accountEntities || [])];
-    entities?.splice(index, 1);
-
-    setAccountEntities([...entities]);
-  };
 
   const form = useForm<VoucherForm>();
 
@@ -129,184 +55,15 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
   return (
     <form>
       <div className="space-y-12">
-        <div className="border-b border-gray-900/10 pb-12">
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-3">
-              <h2 className="text-base font-semibold leading-7 text-gray-900">
-                Disbursement Voucher No:
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-600">
-                {voucher.code}
-              </p>
-            </div>
-
-            <div className="sm:col-span-3">
-              <h2 className="text-base font-semibold leading-7 text-gray-900">
-                Date:
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-600">
-                {voucher.date.toString()}
-              </p>
-            </div>
-
-            <div className="sm:col-span-3">
-              <ComboboxForm
-                name="payee"
-                label="Payee"
-                options={payeesOption()}
-                {...form}
-              />
-            </div>
-
-            <div className="sm:col-span-2">
-              <SelectForm
-                name="modeOfPayment"
-                label="Mode of payment"
-                options={modeOfPaymentOptions}
-                {...form}
-              />
-            </div>
-
-            <div className="col-span-full">
-              <h2 className="text-sm font-medium leading-7 text-gray-900">
-                Address:
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-600">
-                {payees.get(form.getValues().payee?.id.toString())?.address ||
-                  ""}
-              </p>
-            </div>
-
-            <div className="sm:col-span-2">
-              <SelectForm
-                name="responsibilityCenter"
-                label="Responsibility center"
-                options={responsibilityCenterOptions}
-                {...form}
-              />
-            </div>
-
-            <div className="sm:col-span-5">
-              <TextAreaForm name="particulars" label="Particulars" {...form} />
-            </div>
-
-            <div className="col-span-full">
-              <CheckboxForm
-                name="hasFixedGrossAmount"
-                label="Custom gross amount"
-                description="Enable this if you want to specify the gross amount to be calculated in tax"
-                {...form}
-              />
-            </div>
-
-            <div className="sm:col-span-2">
-              <SelectForm
-                name="taxType"
-                label="Tax type"
-                options={taxTypeOptions}
-                {...form}
-              />
-            </div>
-
-            <div className="sm:col-span-1">
-              <InputForm
-                name="grossAmount"
-                label="Custom Gross Amount"
-                {...form}
-                disabled
-              />
-            </div>
-
-            <div className="sm:col-span-1">
-              <InputForm
-                name="percentage1"
-                label="Percentage"
-                {...form}
-                disabled
-              />
-            </div>
-
-            <div className="sm:col-span-1">
-              <InputForm
-                name="percentage2"
-                label="Percentage"
-                {...form}
-                disabled
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
-            Signatories
-          </h2>
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-2">
-              <ComboboxForm
-                name=""
-                label="Certified by"
-                options={employeesOption()}
-                {...form}
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <ComboboxForm
-                name="signatory1"
-                label="Accounting head"
-                options={employeesOption()}
-                {...form}
-              />
-            </div>
-
-            <div className="sm:col-span-2">
-              <ComboboxForm
-                name="signatory2"
-                label="PARPO"
-                options={employeesOption()}
-                {...form}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
-            Accounting Entities
-          </h2>
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-4">
-              <ComboboxSelect
-                label="Account"
-                options={accountsOption()}
-                selectedOption={selectedAccount}
-                onChange={(account: Option) => setSelectedAccount(account)}
-              />
-            </div>
-
-            <div className="sm:col-span-1">
-              <Input
-                label="Amount"
-                value={amount}
-                onChange={(e) => setAmount(parseInt(e.target.value))}
-              />
-            </div>
-
-            <div className="sm:col-span-1">
-              <Select
-                label="Add as"
-                options={entityTypeOptions}
-                selectedOption={{ id: 1, value: "-Select-" }}
-                onChange={(selected: Option) => onValueChange(selected)}
-              />
-            </div>
-          </div>
-
-          <AccountingEntity
-            accountEntities={accountEntities || []}
-            onRemove={onEntityRemove}
-          />
-        </div>
+        <PayeeInfoSection form={form} voucher={voucher} payees={payees} />
+        <SignatoriesSection form={form} employees={employees} />
+        <AccountingEntitiesSection
+          accounts={accounts}
+          accountEntities={accountEntities}
+          setAccountEntities={(accountEntities: VoucherAccount[] | null) =>
+            setAccountEntities(accountEntities)
+          }
+        />
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
