@@ -1,9 +1,9 @@
-import { voucherApiUrl } from "@/common/apiUrl";
+import { payeeUrl } from "@/common/apiUrl";
 import { Payee } from "@/common/backend-types";
 import PayeeList from "./payeeList";
 
 const getPayees = async () => {
-  const res = await fetch(`${voucherApiUrl}/payee`);
+  const res = await fetch(payeeUrl);
   if (!res.ok) {
     throw new Error("Failed to fetch payees");
   }

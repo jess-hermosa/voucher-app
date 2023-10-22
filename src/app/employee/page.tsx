@@ -1,9 +1,9 @@
-import { voucherApiUrl } from "@/common/apiUrl";
+import { employeeUrl } from "@/common/apiUrl";
 import { Employee } from "@/common/backend-types";
 import EmployeeList from "./employeeList";
 
 const getEmployees = async () => {
-  const res = await fetch(`${voucherApiUrl}/employee`);
+  const res = await fetch(employeeUrl);
   if (!res.ok) {
     throw new Error("Failed to fetch employees");
   }

@@ -1,9 +1,9 @@
-import { voucherApiUrl } from "@/common/apiUrl";
+import { accountUrl } from "@/common/apiUrl";
 import { Account } from "@/common/backend-types";
 import AccountList from "./accountList";
 
 const getAccounts = async () => {
-  const res = await fetch(`${voucherApiUrl}/account`);
+  const res = await fetch(accountUrl);
   if (!res.ok) {
     throw new Error("Failed to fetch accounts");
   }

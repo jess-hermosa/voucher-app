@@ -40,7 +40,7 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
       particulars: "",
       accountEntities: accountEntities || [],
       tax: {
-        id: voucher.tax.id,
+        id: null,
         type: data.taxType,
         percentage1: data.percentage1,
         percentage2: data.percentage2,

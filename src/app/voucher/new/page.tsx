@@ -4,11 +4,8 @@ import VoucherForm from "./voucherForm";
 
 async function getData() {
   const res = await fetch("https://api.example.com/...");
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
 
   if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
   }
 
@@ -30,7 +27,7 @@ const NewVoucher = () => {
     particulars: "",
     accountEntities: [],
     tax: {
-      id: 0,
+      id: null,
       type: 0,
       percentage1: 0,
       percentage2: 0,

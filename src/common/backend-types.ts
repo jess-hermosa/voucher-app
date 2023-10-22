@@ -39,7 +39,7 @@ export interface Settings {
 }
 
 export interface Tax {
-  id: number;
+  id: number | null;
   type: number;
   percentage1: number;
   percentage2: number;
@@ -48,7 +48,7 @@ export interface Tax {
 }
 
 export interface VoucherAccount {
-  id: number;
+  id: number | null;
   account: Account | null;
   debit: number | null;
   credit: number | null;

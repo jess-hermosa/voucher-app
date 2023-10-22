@@ -27,9 +27,10 @@ const AccountingEntitiesSection: FC<Props> = ({
     if (!selectedAccount || amount < 1 || selected.id === 1) return;
     let entities = [...(accountEntities || [])];
 
+    //TODO: if code already exist in list, just update the amount / value
     if (selected.id === 2) {
       entities.push({
-        id: accountEntities?.length || 0,
+        id: null,
         account: accounts.get(selectedAccount.id.toString()) || null,
         debit: amount,
         credit: null,
@@ -37,7 +38,7 @@ const AccountingEntitiesSection: FC<Props> = ({
       setAccountEntities(entities);
     } else {
       entities.push({
-        id: accountEntities?.length || 0,
+        id: null,
         account: accounts.get(selectedAccount.id.toString()) || null,
         debit: null,
         credit: amount,

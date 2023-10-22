@@ -51,7 +51,10 @@ const Voucher: FC<Props> = ({ accountEntities, onRemove }) => {
           </thead>
           <tbody>
             {accountEntities.map((entity, index) => (
-              <tr key={entity.id} className="border-b border-gray-200">
+              <tr
+                key={entity.account?.code}
+                className="border-b border-gray-200"
+              >
                 <td className="max-w-0 py-5 pl-4 pr-3 text-sm sm:pl-0">
                   <div className="font-medium text-gray-900">
                     {entity.account?.name}
