@@ -12,11 +12,11 @@ const PayeePage = async () => {
   });
 
   return (
-    <Hydrate state={dehydrate(queryClient)}>
-      <Suspense fallback={<>loading page</>}>
+    <Suspense fallback={<>loading page</>}>
+      <Hydrate state={dehydrate(queryClient)}>
         <PayeeList />
-      </Suspense>
-    </Hydrate>
+      </Hydrate>
+    </Suspense>
   );
 };
 

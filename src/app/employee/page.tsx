@@ -12,11 +12,11 @@ const EmployeePage = async () => {
   });
 
   return (
-    <Hydrate state={dehydrate(queryClient)}>
-      <Suspense fallback={<>loading page</>}>
+    <Suspense fallback={<>loading page</>}>
+      <Hydrate state={dehydrate(queryClient)}>
         <EmployeeList />
-      </Suspense>
-    </Hydrate>
+      </Hydrate>
+    </Suspense>
   );
 };
 

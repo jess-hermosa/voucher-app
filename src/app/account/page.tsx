@@ -12,11 +12,11 @@ const AccountPage = async () => {
   });
 
   return (
-    <Hydrate state={dehydrate(queryClient)}>
-      <Suspense fallback={<>loading page</>}>
+    <Suspense fallback={<>loading page</>}>
+      <Hydrate state={dehydrate(queryClient)}>
         <AccountList />
-      </Suspense>
-    </Hydrate>
+      </Hydrate>
+    </Suspense>
   );
 };
 
