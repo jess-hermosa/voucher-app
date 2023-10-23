@@ -1,5 +1,6 @@
 import { payeeUrl } from "@/common/apiUrl";
 import { Payee } from "@/common/backend-types";
+import { Suspense } from "react";
 import PayeeList from "./payeeList";
 
 const getPayees = async () => {
@@ -14,7 +15,11 @@ const getPayees = async () => {
 const Payee = async () => {
   const payees: Payee[] = await getPayees();
 
-  return <PayeeList payees={payees} />;
+  return (
+    <Suspense fallback={<>loading page</>}>
+      <PayeeList payees={payees} />
+    </Suspense>
+  );
 };
 
 export default Payee;

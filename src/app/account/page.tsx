@@ -1,5 +1,6 @@
 import { accountUrl } from "@/common/apiUrl";
 import { Account } from "@/common/backend-types";
+import { Suspense } from "react";
 import AccountList from "./accountList";
 
 const getAccounts = async () => {
@@ -14,7 +15,11 @@ const getAccounts = async () => {
 const Account = async () => {
   const accounts: Account[] = await getAccounts();
 
-  return <AccountList accounts={accounts} />;
+  return (
+    <Suspense fallback={<>loading page</>}>
+      <AccountList accounts={accounts} />
+    </Suspense>
+  );
 };
 
 export default Account;

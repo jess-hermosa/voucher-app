@@ -1,5 +1,6 @@
 import { employeeUrl } from "@/common/apiUrl";
 import { Employee } from "@/common/backend-types";
+import { Suspense } from "react";
 import EmployeeList from "./employeeList";
 
 const getEmployees = async () => {
@@ -14,7 +15,11 @@ const getEmployees = async () => {
 const Employee = async () => {
   const employees: Employee[] = await getEmployees();
 
-  return <EmployeeList employees={employees} />;
+  return (
+    <Suspense fallback={<>loading page</>}>
+      <EmployeeList employees={employees} />
+    </Suspense>
+  );
 };
 
 export default Employee;

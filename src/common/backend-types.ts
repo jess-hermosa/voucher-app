@@ -26,7 +26,7 @@ export interface Payee {
 }
 
 export interface Account {
-  id: string;
+  id: string | null;
   name: string;
   code: string;
 }

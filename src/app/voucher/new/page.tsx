@@ -1,6 +1,7 @@
 import { accountUrl, employeeUrl, payeeUrl, voucherUrl } from "@/common/apiUrl";
 import { Account, Employee, Payee, Voucher } from "@/common/backend-types";
 import SectionHeader from "@/components/SectionHeader";
+import { Suspense } from "react";
 import VoucherForm from "./voucherForm";
 
 const getAccounts = async () => {
@@ -44,10 +45,17 @@ const getVoucher = async () => {
 };
 
 const NewVoucher = async () => {
-  const account: Account[] = await getAccounts();
-  const payee: Payee[] = await getPayees();
-  const employee: Employee[] = await getEmployees();
-  const voucher: Voucher = await getVoucher();
+  const accountData = getAccounts();
+  const payeeData = getPayees();
+  const employeeData = getEmployees();
+  const voucherData = getVoucher();
+
+  const [account, payee, employee, voucher] = await Promise.all([
+    accountData,
+    payeeData,
+    employeeData,
+    voucherData,
+  ]);
   // const voucher: Voucher = {
   //   id: "",
   //   code: "",
@@ -71,35 +79,35 @@ const NewVoucher = async () => {
   // };
 
   return (
-    <>
+    <Suspense fallback={<>loading page</>}>
       <SectionHeader header="Disbursement voucher" hasForm={false} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <VoucherForm
           voucher={voucher}
           accounts={
             new Map(
-              account.map((obj) => {
-                return [obj.id, obj];
+              account.map((obj: Account) => {
+                return [obj.id || "", obj];
               })
             )
           }
           payees={
             new Map(
-              payee.map((obj) => {
+              payee.map((obj: Payee) => {
                 return [obj.id, obj];
               })
             )
           }
           employees={
             new Map(
-              employee.map((obj) => {
+              employee.map((obj: Employee) => {
                 return [obj.id, obj];
               })
             )
           }
         />
       </div>
-    </>
+    </Suspense>
   );
 };
 
