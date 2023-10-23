@@ -1,5 +1,9 @@
+import { payeeUrl } from "@/common/apiUrl";
 import { Payee } from "@/common/backend-types";
 import SlideOver from "@/components/Shared/SlideOver";
+import { fetchPayees } from "@/server/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import InputForm from "./form/inputForm";
@@ -10,6 +14,25 @@ interface Props {
 }
 
 const PayeeForm: FC<Props> = ({ selectedPayee, clearForm }) => {
+  const queryClient = useQueryClient();
+  const addPayee = useMutation({
+    mutationFn: (payee: Payee) => {
+      return axios.post(payeeUrl, payee);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [fetchPayees.key] });
+    },
+  });
+
+  const updatePayee = useMutation({
+    mutationFn: (payee: Payee) => {
+      return axios.put(`${payeeUrl}/${payee.id}`, payee);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [fetchPayees.key] });
+    },
+  });
+
   const form = useForm<Payee>({
     values: {
       id: selectedPayee?.id ?? "",
@@ -18,12 +41,19 @@ const PayeeForm: FC<Props> = ({ selectedPayee, clearForm }) => {
     },
   });
 
-  const onSubmit: SubmitHandler<Payee> = (data) => {
+  const onSubmit: SubmitHandler<Payee> = async (data) => {
     if (selectedPayee) {
-      console.log("edited name: ", data.name);
+      await updatePayee.mutateAsync({
+        id: selectedPayee.id,
+        address: data.address,
+        name: data.name,
+      });
     } else {
-      console.log("name: ", data.name);
-      console.log("address: ", data.address);
+      await addPayee.mutateAsync({
+        id: null,
+        address: data.address,
+        name: data.name,
+      });
     }
   };
 

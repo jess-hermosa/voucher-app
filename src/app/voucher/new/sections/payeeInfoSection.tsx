@@ -23,7 +23,7 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
   const payeesOption = () => {
     let options: Option[] = [];
     payees.forEach((p) => {
-      options.push({ id: p.id, value: p.name });
+      options.push({ id: p.id || "", value: p.name });
     });
 
     return options;

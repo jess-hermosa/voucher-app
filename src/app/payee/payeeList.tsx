@@ -3,16 +3,19 @@
 import { Payee } from "@/common/backend-types";
 import EmptyList from "@/components/EmptyList";
 import SectionHeader from "@/components/SectionHeader";
+import { fetchPayees } from "@/server/api";
 import { uiActions } from "@/store/ui";
-import { FC, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import PayeeForm from "./payeeForm";
 
-interface Props {
-  payees: Payee[];
-}
+const PayeeList = () => {
+  const { data: payees } = useQuery({
+    queryKey: [fetchPayees.key],
+    queryFn: fetchPayees.get,
+  });
 
-const PayeeList: FC<Props> = ({ payees }) => {
   const [selectedPayee, setSelectedPayee] = useState<Payee | null>(null);
   const dispatch = useDispatch();
 
@@ -48,7 +51,7 @@ const PayeeList: FC<Props> = ({ payees }) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {payees.map((payee) => (
+                    {payees.map((payee: Payee) => (
                       <tr key={payee.name}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                           {payee.name}

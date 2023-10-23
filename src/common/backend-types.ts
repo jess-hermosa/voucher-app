@@ -14,13 +14,13 @@ export interface Voucher {
 }
 
 export interface Employee {
-  id: string;
+  id: string | null;
   name: string;
   position: string;
 }
 
 export interface Payee {
-  id: string;
+  id: string | null;
   name: string;
   address: string;
 }

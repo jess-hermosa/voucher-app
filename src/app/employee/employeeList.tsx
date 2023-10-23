@@ -3,17 +3,20 @@
 import { Employee } from "@/common/backend-types";
 import EmptyList from "@/components/EmptyList";
 import SectionHeader from "@/components/SectionHeader";
+import { fetchEmployees } from "@/server/api";
 import { uiActions } from "@/store/ui";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
-import { FC, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import EmployeeForm from "./employeeForm";
 
-interface Props {
-  employees: Employee[];
-}
+const EmployeeList = () => {
+  const { data: employees } = useQuery({
+    queryKey: [fetchEmployees.key],
+    queryFn: fetchEmployees.get,
+  });
 
-const EmployeeList: FC<Props> = ({ employees }) => {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null
   );
@@ -57,7 +60,7 @@ const EmployeeList: FC<Props> = ({ employees }) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {employees.map((employee) => (
+                    {employees.map((employee: Employee) => (
                       <tr key={employee.name}>
                         <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                           <div className="flex items-center">

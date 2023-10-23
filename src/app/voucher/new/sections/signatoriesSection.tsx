@@ -13,7 +13,7 @@ const SignatoriesSection: FC<Props> = ({ form, employees }) => {
   const employeesOption = () => {
     let options: Option[] = [];
     employees.forEach((p) => {
-      options.push({ id: p.id, value: p.name });
+      options.push({ id: p.id || "", value: p.name });
     });
 
     return options;

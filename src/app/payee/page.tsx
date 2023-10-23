@@ -1,25 +1,23 @@
-import { payeeUrl } from "@/common/apiUrl";
-import { Payee } from "@/common/backend-types";
+import { fetchPayees } from "@/server/api";
+import { dehydrate, Hydrate, QueryClient } from "@tanstack/react-query";
 import { Suspense } from "react";
 import PayeeList from "./payeeList";
 
-const getPayees = async () => {
-  const res = await fetch(payeeUrl);
-  if (!res.ok) {
-    throw new Error("Failed to fetch payees");
-  }
+const PayeePage = async () => {
+  const queryClient = new QueryClient();
 
-  return res.json();
-};
-
-const Payee = async () => {
-  const payees: Payee[] = await getPayees();
+  await queryClient.prefetchQuery({
+    queryKey: [fetchPayees.key],
+    queryFn: fetchPayees.get,
+  });
 
   return (
-    <Suspense fallback={<>loading page</>}>
-      <PayeeList payees={payees} />
-    </Suspense>
+    <Hydrate state={dehydrate(queryClient)}>
+      <Suspense fallback={<>loading page</>}>
+        <PayeeList />
+      </Suspense>
+    </Hydrate>
   );
 };
 
-export default Payee;
+export default PayeePage;

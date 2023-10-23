@@ -1,25 +1,23 @@
-import { employeeUrl } from "@/common/apiUrl";
-import { Employee } from "@/common/backend-types";
+import { fetchEmployees } from "@/server/api";
+import { dehydrate, Hydrate, QueryClient } from "@tanstack/react-query";
 import { Suspense } from "react";
 import EmployeeList from "./employeeList";
 
-const getEmployees = async () => {
-  const res = await fetch(employeeUrl);
-  if (!res.ok) {
-    throw new Error("Failed to fetch employees");
-  }
+const EmployeePage = async () => {
+  const queryClient = new QueryClient();
 
-  return res.json();
-};
-
-const Employee = async () => {
-  const employees: Employee[] = await getEmployees();
+  await queryClient.prefetchQuery({
+    queryKey: [fetchEmployees.key],
+    queryFn: fetchEmployees.get,
+  });
 
   return (
-    <Suspense fallback={<>loading page</>}>
-      <EmployeeList employees={employees} />
-    </Suspense>
+    <Hydrate state={dehydrate(queryClient)}>
+      <Suspense fallback={<>loading page</>}>
+        <EmployeeList />
+      </Suspense>
+    </Hydrate>
   );
 };
 
-export default Employee;
+export default EmployeePage;
