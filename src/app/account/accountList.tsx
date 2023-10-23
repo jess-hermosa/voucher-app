@@ -1,18 +1,20 @@
 "use client";
 
 import SectionHeader from "@/components/SectionHeader";
-import { FC, useState } from "react";
+import { useState } from "react";
 import AccountForm from "./accountForm";
 import { Account } from "@/common/backend-types";
 import { useDispatch } from "react-redux";
 import { uiActions } from "@/store/ui";
 import EmptyList from "@/components/EmptyList";
+import { useQuery } from "@tanstack/react-query";
+import { fetchAccounts } from "@/server/api";
 
-interface Props {
-  accounts: Account[];
-}
-
-const AccountList: FC<Props> = ({ accounts }) => {
+const AccountList = () => {
+  const { data: accounts } = useQuery({
+    queryKey: [fetchAccounts.key],
+    queryFn: fetchAccounts.get,
+  });
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
   const dispatch = useDispatch();
 
@@ -48,7 +50,7 @@ const AccountList: FC<Props> = ({ accounts }) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {accounts.map((account) => (
+                    {accounts.map((account: Account) => (
                       <tr key={account.name}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                           {account.name}

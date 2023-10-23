@@ -1,25 +1,23 @@
-import { accountUrl } from "@/common/apiUrl";
-import { Account } from "@/common/backend-types";
+import { fetchAccounts } from "@/server/api";
+import { dehydrate, QueryClient, Hydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
-import AccountList from "./accountList";
+import AccountList from "@/app/account/accountList";
 
-const getAccounts = async () => {
-  const res = await fetch(accountUrl);
-  if (!res.ok) {
-    throw new Error("Failed to fetch accounts");
-  }
+const AccountPage = async () => {
+  const queryClient = new QueryClient();
 
-  return res.json();
-};
-
-const Account = async () => {
-  const accounts: Account[] = await getAccounts();
+  await queryClient.prefetchQuery({
+    queryKey: [fetchAccounts.key],
+    queryFn: fetchAccounts.get,
+  });
 
   return (
-    <Suspense fallback={<>loading page</>}>
-      <AccountList accounts={accounts} />
-    </Suspense>
+    <Hydrate state={dehydrate(queryClient)}>
+      <Suspense fallback={<>loading page</>}>
+        <AccountList />
+      </Suspense>
+    </Hydrate>
   );
 };
 
-export default Account;
+export default AccountPage;
