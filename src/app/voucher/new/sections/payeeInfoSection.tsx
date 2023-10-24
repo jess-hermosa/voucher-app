@@ -36,7 +36,9 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
           <h2 className="text-base font-semibold leading-7 text-gray-900">
             Disbursement Voucher No:
           </h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">{voucher.code}</p>
+          <p className="mt-1 text-sm leading-6 text-gray-600">
+            {voucher?.code}
+          </p>
         </div>
 
         <div className="sm:col-span-3">

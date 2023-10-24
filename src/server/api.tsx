@@ -1,5 +1,5 @@
 import axios from "axios";
-import { accountUrl, employeeUrl, payeeUrl } from "@/common/apiUrl";
+import { accountUrl, employeeUrl, payeeUrl, voucherUrl } from "@/common/apiUrl";
 
 export const fetchAccounts = {
   key: "accounts",
@@ -24,6 +24,15 @@ export const fetchEmployees = {
   get: async () => {
     return await (
       await axios.get(employeeUrl)
+    ).data;
+  },
+};
+
+export const fetchVoucher = {
+  key: "voucher",
+  get: async () => {
+    return await (
+      await axios.get(voucherUrl)
     ).data;
   },
 };

@@ -27,7 +27,6 @@ const ComboboxForm: FC<Props> = ({
       control={control}
       defaultValue={null}
       render={({ field }) => {
-        console.log("field: ", field);
         return (
           <ComboboxSelect
             selectedOption={field.value}

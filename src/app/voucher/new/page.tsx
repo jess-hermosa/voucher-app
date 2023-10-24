@@ -1,88 +1,43 @@
-import { accountUrl, employeeUrl, payeeUrl, voucherUrl } from "@/common/apiUrl";
-import { Account, Employee, Payee, Voucher } from "@/common/backend-types";
+import { Account, Employee, Payee } from "@/common/backend-types";
 import SectionHeader from "@/components/SectionHeader";
+import {
+  fetchAccounts,
+  fetchEmployees,
+  fetchPayees,
+  fetchVoucher,
+} from "@/server/api";
+import { QueryClient } from "@tanstack/react-query";
 import { Suspense } from "react";
 import VoucherForm from "./voucherForm";
 
-const getAccounts = async () => {
-  const res = await fetch(accountUrl);
+const NewVoucherPage = async () => {
+  const queryClient = new QueryClient();
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch account");
-  }
+  await queryClient.prefetchQuery({
+    queryKey: [fetchEmployees.key],
+    queryFn: fetchEmployees.get,
+  });
 
-  return res.json();
-};
+  await queryClient.prefetchQuery({
+    queryKey: [fetchAccounts.key],
+    queryFn: fetchAccounts.get,
+  });
 
-const getPayees = async () => {
-  const res = await fetch(payeeUrl);
+  await queryClient.prefetchQuery({
+    queryKey: [fetchPayees.key],
+    queryFn: fetchPayees.get,
+  });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch payee");
-  }
-
-  return res.json();
-};
-
-const getEmployees = async () => {
-  const res = await fetch(employeeUrl);
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch employee");
-  }
-
-  return res.json();
-};
-
-const getVoucher = async () => {
-  const res = await fetch(voucherUrl);
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch voucher");
-  }
-
-  return res.json();
-};
-
-const NewVoucher = async () => {
-  const accountData = getAccounts();
-  const payeeData = getPayees();
-  const employeeData = getEmployees();
-  const voucherData = getVoucher();
-
-  const [account, payee, employee, voucher] = await Promise.all([
-    accountData,
-    payeeData,
-    employeeData,
-    voucherData,
-  ]);
-  // const voucher: Voucher = {
-  //   id: "",
-  //   code: "",
-  //   date: new Date(),
-  //   modeOfPayment: 0,
-  //   responsibilityCenter: 0,
-  //   certifiedBy: null,
-  //   payee: null,
-  //   particulars: "",
-  //   accountEntities: [],
-  //   tax: {
-  //     id: null,
-  //     type: 0,
-  //     percentage1: 0,
-  //     percentage2: 0,
-  //     hasFixedGrossAmount: false,
-  //     grossAmount: 0,
-  //   },
-  //   signatory1: null,
-  //   signatory2: null,
-  // };
+  await queryClient.prefetchQuery({
+    queryKey: [fetchVoucher.key],
+    queryFn: fetchVoucher.get,
+  });
 
   return (
     <Suspense fallback={<>loading page</>}>
       <SectionHeader header="Disbursement voucher" hasForm={false} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <VoucherForm
+        {/* <VoucherForm
           voucher={voucher}
           accounts={
             new Map(
@@ -105,10 +60,11 @@ const NewVoucher = async () => {
               })
             )
           }
-        />
+        /> */}
+        <VoucherForm />
       </div>
     </Suspense>
   );
 };
 
-export default NewVoucher;
+export default NewVoucherPage;

@@ -13,15 +13,59 @@ import { FC, useState } from "react";
 import PayeeInfoSection from "./sections/payeeInfoSection";
 import SignatoriesSection from "./sections/signatoriesSection";
 import AccountingEntitiesSection from "./sections/accountingEntitiesSection";
+import { useQuery } from "@tanstack/react-query";
+import {
+  fetchAccounts,
+  fetchEmployees,
+  fetchPayees,
+  fetchVoucher,
+} from "@/server/api";
 
-interface Props {
-  voucher: Voucher;
-  accounts: Map<string, Account>;
-  payees: Map<string, Payee>;
-  employees: Map<string, Employee>;
-}
+const VoucherForm = () => {
+  const employeesQuery = useQuery({
+    queryKey: [fetchEmployees.key],
+    queryFn: fetchEmployees.get,
+  });
 
-const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
+  const payeesQuery = useQuery({
+    queryKey: [fetchPayees.key],
+    queryFn: fetchPayees.get,
+  });
+
+  const accountsQuery = useQuery({
+    queryKey: [fetchAccounts.key],
+    queryFn: fetchAccounts.get,
+  });
+
+  const { data: voucher } = useQuery({
+    queryKey: [fetchVoucher.key],
+    queryFn: fetchVoucher.get,
+  });
+
+  const accounts: Map<string, Account> | null = accountsQuery.isSuccess
+    ? new Map(
+        accountsQuery.data?.map((obj: Account) => {
+          return [obj.id || "", obj];
+        })
+      )
+    : null;
+
+  const payees: Map<string, Payee> | null = payeesQuery.isSuccess
+    ? new Map(
+        payeesQuery.data?.map((obj: Payee) => {
+          return [obj.id, obj];
+        })
+      )
+    : null;
+
+  const employees: Map<string, Employee> | null = employeesQuery.isSuccess
+    ? new Map(
+        employeesQuery.data?.map((obj: Employee) => {
+          return [obj.id, obj];
+        })
+      )
+    : null;
+
   const [accountEntities, setAccountEntities] = useState<
     VoucherAccount[] | null
   >(null);
@@ -35,8 +79,8 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
       date: voucher.date || new Date(),
       modeOfPayment: data.modeOfPayment,
       responsibilityCenter: data.responsibilityCenter,
-      certifiedBy: employees.get(data.certifiedBy.id.toString()) || null,
-      payee: payees.get(data.payee.id.toString()) || null,
+      certifiedBy: employees?.get(data.certifiedBy.id.toString()) || null,
+      payee: payees?.get(data.payee.id.toString()) || null,
       particulars: "",
       accountEntities: accountEntities || [],
       tax: {
@@ -47,23 +91,27 @@ const VoucherForm: FC<Props> = ({ voucher, accounts, payees, employees }) => {
         hasFixedGrossAmount: data.hasFixedGrossAmount,
         grossAmount: data.grossAmount,
       },
-      signatory1: employees.get(data.signatory1.id.toString()) || null,
-      signatory2: employees.get(data.signatory2.id.toString()) || null,
+      signatory1: employees?.get(data.signatory1.id.toString()) || null,
+      signatory2: employees?.get(data.signatory2.id.toString()) || null,
     };
   };
 
   return (
     <form>
       <div className="space-y-12">
-        <PayeeInfoSection form={form} voucher={voucher} payees={payees} />
-        <SignatoriesSection form={form} employees={employees} />
-        <AccountingEntitiesSection
-          accounts={accounts}
-          accountEntities={accountEntities}
-          setAccountEntities={(accountEntities: VoucherAccount[] | null) =>
-            setAccountEntities(accountEntities)
-          }
-        />
+        {payees && voucher && (
+          <PayeeInfoSection form={form} voucher={voucher} payees={payees} />
+        )}
+        {employees && <SignatoriesSection form={form} employees={employees} />}
+        {accounts && (
+          <AccountingEntitiesSection
+            accounts={accounts ?? null}
+            accountEntities={accountEntities}
+            setAccountEntities={(accountEntities: VoucherAccount[] | null) =>
+              setAccountEntities(accountEntities)
+            }
+          />
+        )}
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">

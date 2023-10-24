@@ -72,7 +72,7 @@ const AccountingEntitiesSection: FC<Props> = ({
   const accountsOption = () => {
     let options: Option[] = [];
     accounts.forEach((p) => {
-      options.push({ id: p.id, value: p.code });
+      options.push({ id: p.id || "", value: p.code });
     });
 
     return options;
