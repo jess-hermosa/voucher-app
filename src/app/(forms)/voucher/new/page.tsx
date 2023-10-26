@@ -1,38 +1,8 @@
-import { Account, Employee, Payee } from "@/common/backend-types";
 import SectionHeader from "@/components/SectionHeader";
-import {
-  fetchAccounts,
-  fetchEmployees,
-  fetchPayees,
-  fetchVoucher,
-} from "@/server/api";
-import { QueryClient } from "@tanstack/react-query";
 import { Suspense } from "react";
 import VoucherForm from "./voucherForm";
 
 const NewVoucherPage = async () => {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: [fetchEmployees.key],
-    queryFn: fetchEmployees.get,
-  });
-
-  await queryClient.prefetchQuery({
-    queryKey: [fetchAccounts.key],
-    queryFn: fetchAccounts.get,
-  });
-
-  await queryClient.prefetchQuery({
-    queryKey: [fetchPayees.key],
-    queryFn: fetchPayees.get,
-  });
-
-  await queryClient.prefetchQuery({
-    queryKey: [fetchVoucher.key],
-    queryFn: fetchVoucher.get,
-  });
-
   return (
     <Suspense fallback={<>loading page</>}>
       <SectionHeader header="Disbursement voucher" hasForm={false} />

@@ -1,7 +1,7 @@
+import ComboboxSelect from "@/components/Shared/ComboboxSelect";
 import { FC } from "react";
 import { Control, Controller, FormState } from "react-hook-form";
 import { Option } from "@/common/types";
-import Select from "@/components/Shared/Select";
 
 interface Props {
   name: string;
@@ -13,7 +13,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const SelectForm: FC<Props> = ({
+const ComboboxForm: FC<Props> = ({
   name,
   label,
   control,
@@ -25,8 +25,9 @@ const SelectForm: FC<Props> = ({
     <Controller
       name={name}
       control={control}
+      defaultValue={null}
       render={({ field }) => (
-        <Select
+        <ComboboxSelect
           selectedOption={field.value}
           onChange={field.onChange}
           label={label}
@@ -37,4 +38,4 @@ const SelectForm: FC<Props> = ({
   );
 };
 
-export default SelectForm;
+export default ComboboxForm;

@@ -70,7 +70,9 @@ const VoucherForm = () => {
     VoucherAccount[] | null
   >(null);
 
-  const form = useForm<VoucherForm>();
+  const form = useForm<VoucherForm>({
+    values: voucher,
+  });
 
   const onSubmit: SubmitHandler<VoucherForm> = (data) => {
     const updatedVoucher: Voucher = {

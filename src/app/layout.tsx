@@ -1,35 +1,23 @@
 "use client";
 
 import "./globals.css";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { store } from "@/store";
-import Sidebar from "@/components/Layout/Sidebar";
-import Header from "@/components/Layout/Header";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import getQueryClient from "@/common/getQueryClient";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient();
+  const queryClient = getQueryClient();
+
   return (
     <html lang="en" className="h-full bg-white font-customfont">
       <body className="h-full font-customfont">
         <QueryClientProvider client={queryClient}>
-          <Provider store={store}>
-            <div>
-              <Sidebar />
-              <div className="lg:pl-72">
-                <Header />
-                <main className="py-10">
-                  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    {children}
-                  </div>
-                </main>
-              </div>
-            </div>
-          </Provider>
+          <Provider store={store}>{children}</Provider>
         </QueryClientProvider>
       </body>
     </html>
