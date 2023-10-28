@@ -62,6 +62,7 @@ const AccountForm: FC<Props> = ({ selectedAccount, clearForm }) => {
       header="New account"
       onSubmit={form.handleSubmit(onSubmit)}
       clearForm={clearForm}
+      loading={addAccount.isLoading || updateAccount.isLoading}
     >
       <InputForm label="Name" name="name" {...form} />
       <InputForm label="Code" name="code" {...form} />

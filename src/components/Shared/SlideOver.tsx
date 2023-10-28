@@ -4,15 +4,23 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/store";
 import { uiActions } from "@/store/ui";
+import LoadingSvg from "./Loading";
 
 interface Props {
   header: string;
   children: React.ReactNode;
   onSubmit: (onValid: any, onInvalid?: any) => any;
   clearForm: () => void;
+  loading?: boolean;
 }
 
-const SlideOver: FC<Props> = ({ header, children, onSubmit, clearForm }) => {
+const SlideOver: FC<Props> = ({
+  header,
+  children,
+  onSubmit,
+  clearForm,
+  loading,
+}) => {
   const { isOpen, overlay } = useAppSelector((s) => s.ui);
   const dispatch = useDispatch();
 
@@ -92,8 +100,9 @@ const SlideOver: FC<Props> = ({ header, children, onSubmit, clearForm }) => {
                       </button>
                       <button
                         type="submit"
-                        className="ml-4 inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="ml-4 inline-flex justify-center items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
+                        {loading && <LoadingSvg />}
                         Save
                       </button>
                     </div>
