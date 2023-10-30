@@ -63,6 +63,7 @@ const PayeeForm: FC<Props> = ({ selectedPayee, clearForm }) => {
       onSubmit={form.handleSubmit(onSubmit)}
       clearForm={clearForm}
       loading={addPayee.isLoading || updatePayee.isLoading}
+      success={addPayee.isSuccess || updatePayee.isSuccess}
     >
       <InputForm label="Name" name="name" {...form} />
       <InputForm label="Address" name="address" {...form} />

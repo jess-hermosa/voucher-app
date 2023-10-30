@@ -12,6 +12,7 @@ interface Props {
   onSubmit: (onValid: any, onInvalid?: any) => any;
   clearForm: () => void;
   loading?: boolean;
+  success?: boolean;
 }
 
 const SlideOver: FC<Props> = ({
@@ -20,6 +21,7 @@ const SlideOver: FC<Props> = ({
   onSubmit,
   clearForm,
   loading,
+  success,
 }) => {
   const { isOpen, overlay } = useAppSelector((s) => s.ui);
   const dispatch = useDispatch();
@@ -29,6 +31,10 @@ const SlideOver: FC<Props> = ({
   useEffect(() => {
     if (isOpen === false) clearForm();
   }, [isOpen]);
+
+  useEffect(() => {
+    if (success === true) dispatch(uiActions.toggleSidebar(null));
+  }, [success]);
 
   return (
     <Transition.Root show={isOpen && overlay === "slideover"} as={Fragment}>

@@ -63,6 +63,7 @@ const EmployeeForm: FC<Props> = ({ selectedEmployee, clearForm }) => {
       onSubmit={form.handleSubmit(onSubmit)}
       clearForm={clearForm}
       loading={addEmployee.isLoading || updateEmployee.isLoading}
+      success={addEmployee.isSuccess || updateEmployee.isSuccess}
     >
       <InputForm label="Name" name="name" {...form} />
       <InputForm label="Position" name="position" {...form} />
