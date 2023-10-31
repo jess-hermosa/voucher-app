@@ -17,7 +17,7 @@ interface Props {
 const Select: FC<Props> = ({ options, label, selectedOption, onChange }) => {
   return (
     <Listbox
-      value={options.find((x) => x.id === selectedOption?.id)}
+      defaultValue={options.find((x) => x.id === selectedOption?.id)}
       onChange={onChange}
     >
       {({ open }) => (
