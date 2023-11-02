@@ -33,7 +33,7 @@ const SlideOver: FC<Props> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (success === true) dispatch(uiActions.toggleSidebar(null));
+    if (success) dispatch(uiActions.toggleSidebar(null));
   }, [success]);
 
   return (

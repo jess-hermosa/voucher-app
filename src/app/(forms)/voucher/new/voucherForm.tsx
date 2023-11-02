@@ -99,7 +99,7 @@ const VoucherForm = () => {
   };
 
   return (
-    <form>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
       <div className="space-y-12">
         {payees && voucher && (
           <PayeeInfoSection form={form} voucher={voucher} payees={payees} />
