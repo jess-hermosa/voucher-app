@@ -5,7 +5,7 @@ import {
   responsibilityCenterOptions,
   taxTypeOptions,
 } from "@/common/constant-fields";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import CheckboxForm from "../form/checkBoxForm";
 import ComboboxForm from "../form/comboBoxForm";
 import InputForm from "../form/inputForm";
@@ -20,6 +20,10 @@ interface Props {
 }
 
 const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
+  const [address, setAddress] = useState(
+    payees.get(form.getValues().payee?.id.toString())?.address || ""
+  );
+
   const payeesOption = () => {
     let options: Option[] = [];
     payees.forEach((p) => {
@@ -55,6 +59,11 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
             name="payee"
             label="Payee"
             options={payeesOption()}
+            onChange={() => {
+              setAddress(
+                payees.get(form.getValues().payee?.id.toString())?.address || ""
+              );
+            }}
             {...form}
           />
         </div>
@@ -72,9 +81,7 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
           <h2 className="text-sm font-medium leading-7 text-gray-900">
             Address:
           </h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            {payees.get(form.getValues().payee?.id.toString())?.address || ""}
-          </p>
+          <p className="mt-1 text-sm leading-6 text-gray-600">{address}</p>
         </div>
 
         <div className="sm:col-span-2">

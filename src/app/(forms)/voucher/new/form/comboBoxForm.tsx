@@ -11,6 +11,7 @@ interface Props {
   options: Option[];
   required?: boolean;
   disabled?: boolean;
+  onChange?: () => void;
 }
 
 const ComboboxForm: FC<Props> = ({
@@ -20,6 +21,7 @@ const ComboboxForm: FC<Props> = ({
   formState,
   options,
   disabled,
+  onChange,
 }) => {
   return (
     <Controller
@@ -29,7 +31,10 @@ const ComboboxForm: FC<Props> = ({
       render={({ field }) => (
         <ComboboxSelect
           selectedOption={field.value}
-          onChange={field.onChange}
+          onChange={(selected) => {
+            field.onChange(selected);
+            if (onChange) onChange();
+          }}
           label={label}
           options={options}
         />
