@@ -11,6 +11,7 @@ interface Props {
   options: Option[];
   required?: boolean;
   disabled?: boolean;
+  onChange?: () => void;
 }
 
 const SelectForm: FC<Props> = ({
@@ -20,6 +21,7 @@ const SelectForm: FC<Props> = ({
   formState,
   options,
   disabled,
+  onChange,
 }) => {
   return (
     <Controller
@@ -29,7 +31,10 @@ const SelectForm: FC<Props> = ({
       render={({ field }) => (
         <Select
           selectedOption={field.value}
-          onChange={field.onChange}
+          onChange={(option) => {
+            field.onChange(option);
+            if (onChange) onChange();
+          }}
           label={label}
           options={options}
         />

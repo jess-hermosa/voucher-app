@@ -22,7 +22,7 @@ export interface MenuItem {
 }
 
 export type Option = {
-  id: string | number;
+  id: string;
   value: string;
 };
 
@@ -30,15 +30,15 @@ export interface VoucherForm {
   id: string;
   code: string;
   date: Date;
-  modeOfPayment: number;
-  responsibilityCenter: number;
+  modeOfPayment: Option;
+  responsibilityCenter: Option;
   certifiedBy: Option;
   payee: Option;
   particulars: string;
   accountEntities: VoucherAccount[];
   signatory1: Option;
   signatory2: Option;
-  taxType: number;
+  taxType: Option;
   percentage1: number;
   percentage2: number;
   hasFixedGrossAmount: boolean;

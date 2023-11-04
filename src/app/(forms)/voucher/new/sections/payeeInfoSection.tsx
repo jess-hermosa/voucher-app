@@ -24,6 +24,10 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
     payees.get(form.getValues().payee?.id.toString())?.address || ""
   );
 
+  const [taxType, setTaxType] = useState<string>(
+    form.getValues().taxType?.toString() || ""
+  );
+
   const [hasCustomGrossAmount, setHasCustomGrossAmount] = useState(
     form.getValues().hasFixedGrossAmount
   );
@@ -107,6 +111,7 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
             label="Custom gross amount"
             description="Enable this if you want to specify the gross amount to be calculated in tax"
             onChange={() => setHasCustomGrossAmount(!hasCustomGrossAmount)}
+            checked={hasCustomGrossAmount}
             {...form}
           />
         </div>
@@ -116,6 +121,10 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
             name="taxType"
             label="Tax type"
             options={taxTypeOptions}
+            onChange={() => {
+              console.log("taxType", taxType);
+              setTaxType(form.getValues().taxType?.id || "");
+            }}
             {...form}
           />
         </div>
@@ -130,11 +139,21 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
         </div>
 
         <div className="sm:col-span-1">
-          <InputForm name="percentage1" label="Percentage" {...form} disabled />
+          <InputForm
+            name="percentage1"
+            label="Percentage"
+            {...form}
+            disabled={taxType !== "4"}
+          />
         </div>
 
         <div className="sm:col-span-1">
-          <InputForm name="percentage2" label="Percentage" {...form} disabled />
+          <InputForm
+            name="percentage2"
+            label="Percentage"
+            {...form}
+            disabled={taxType !== "4"}
+          />
         </div>
       </div>
     </div>
