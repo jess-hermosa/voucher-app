@@ -8,6 +8,7 @@ interface Props {
   label: string;
   register: UseFormRegister<VoucherForm>;
   formState: FormState<VoucherForm>;
+  onChange: () => void;
   description?: string;
 }
 
@@ -16,6 +17,7 @@ const CheckboxForm: FC<Props> = ({
   label,
   register,
   description,
+  onChange,
   formState,
 }) => {
   return (
@@ -24,6 +26,7 @@ const CheckboxForm: FC<Props> = ({
       name={name}
       label={label}
       description={description}
+      onChange={onChange}
     />
   );
 };

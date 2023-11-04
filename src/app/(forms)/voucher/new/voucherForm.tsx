@@ -9,7 +9,7 @@ import {
 } from "@/common/backend-types";
 import { VoucherForm } from "@/common/types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FC, useState } from "react";
+import { useState } from "react";
 import PayeeInfoSection from "./sections/payeeInfoSection";
 import SignatoriesSection from "./sections/signatoriesSection";
 import AccountingEntitiesSection from "./sections/accountingEntitiesSection";

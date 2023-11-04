@@ -24,6 +24,10 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
     payees.get(form.getValues().payee?.id.toString())?.address || ""
   );
 
+  const [hasCustomGrossAmount, setHasCustomGrossAmount] = useState(
+    form.getValues().hasFixedGrossAmount
+  );
+
   const payeesOption = () => {
     let options: Option[] = [];
     payees.forEach((p) => {
@@ -102,6 +106,7 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
             name="hasFixedGrossAmount"
             label="Custom gross amount"
             description="Enable this if you want to specify the gross amount to be calculated in tax"
+            onChange={() => setHasCustomGrossAmount(!hasCustomGrossAmount)}
             {...form}
           />
         </div>
@@ -120,7 +125,7 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
             name="grossAmount"
             label="Custom Gross Amount"
             {...form}
-            disabled
+            disabled={!hasCustomGrossAmount}
           />
         </div>
 
