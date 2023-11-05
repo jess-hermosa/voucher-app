@@ -111,7 +111,6 @@ const PayeeInfoSection: FC<Props> = ({ form, voucher, payees }) => {
             label="Custom gross amount"
             description="Enable this if you want to specify the gross amount to be calculated in tax"
             onChange={() => setHasCustomGrossAmount(!hasCustomGrossAmount)}
-            checked={hasCustomGrossAmount}
             {...form}
           />
         </div>

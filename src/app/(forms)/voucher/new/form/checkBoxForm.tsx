@@ -10,7 +10,6 @@ interface Props {
   formState: FormState<VoucherForm>;
   onChange: () => void;
   description?: string;
-  checked?: boolean;
 }
 
 const CheckboxForm: FC<Props> = ({
@@ -19,7 +18,6 @@ const CheckboxForm: FC<Props> = ({
   register,
   description,
   onChange,
-  checked,
   formState,
 }) => {
   return (
@@ -29,7 +27,6 @@ const CheckboxForm: FC<Props> = ({
       label={label}
       description={description}
       onChange={onChange}
-      checked={checked}
     />
   );
 };

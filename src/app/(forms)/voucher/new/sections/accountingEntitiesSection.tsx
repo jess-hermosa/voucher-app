@@ -24,7 +24,7 @@ const AccountingEntitiesSection: FC<Props> = ({
   const [amount, setAmount] = useState<number>(0);
 
   const onValueChange = (selected: Option) => {
-    if (!selectedAccount || amount < 1 || selected.id === 1) return;
+    if (!selectedAccount || amount < 1 || selected.id === "1") return;
     let entities = [...(accountEntities || [])];
 
     const existingAccountIndex = accountEntities?.findIndex(
@@ -32,7 +32,7 @@ const AccountingEntitiesSection: FC<Props> = ({
     );
 
     if (existingAccountIndex && existingAccountIndex != -1) {
-      if (selected.id === 2) {
+      if (selected.id === "2") {
         entities[existingAccountIndex].credit = null;
         entities[existingAccountIndex].debit = amount;
         setAccountEntities(entities);
@@ -47,7 +47,7 @@ const AccountingEntitiesSection: FC<Props> = ({
       return;
     }
 
-    if (selected.id === 2) {
+    if (selected.id === "2") {
       entities.push({
         id: null,
         account: accounts.get(selectedAccount.id.toString()) || null,
@@ -112,7 +112,7 @@ const AccountingEntitiesSection: FC<Props> = ({
           <Select
             label="Add as"
             options={entityTypeOptions}
-            selectedOption={{ id: 1, value: "-Select-" }}
+            selectedOption={entityTypeOptions[0]}
             onChange={(selected: Option) => onValueChange(selected)}
           />
         </div>

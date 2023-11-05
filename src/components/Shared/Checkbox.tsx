@@ -3,12 +3,11 @@ import { FC, forwardRef, InputHTMLAttributes } from "react";
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   description?: string;
-  checked?: boolean;
 }
 
 const Checkbox: FC<Props> = forwardRef<HTMLInputElement, Props>(
   (props, ref) => {
-    const { name, label, description, className, checked, ...rest } = props;
+    const { name, label, description, className, ...rest } = props;
 
     return (
       <div className="relative flex items-start">
@@ -20,7 +19,6 @@ const Checkbox: FC<Props> = forwardRef<HTMLInputElement, Props>(
             name={name}
             type="checkbox"
             className={`h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 ${className}`}
-            checked={checked}
             {...rest}
           />
         </div>
