@@ -36,3 +36,12 @@ export const fetchVoucher = {
     ).data;
   },
 };
+
+export const fetchArchivedVouchers = {
+  key: "archived-voucher",
+  get: async () => {
+    return await (
+      await axios.get(voucherUrl)
+    ).data;
+  },
+};

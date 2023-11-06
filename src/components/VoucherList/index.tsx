@@ -1,5 +1,9 @@
-import { FC, Fragment } from "react";
-import { VoucherTransactions } from "@/common/types";
+"use client";
+
+import { groupBy } from "@/common/utils/groupBy";
+import { fetchArchivedVouchers } from "@/server/api";
+import { useQuery } from "@tanstack/react-query";
+import { Fragment } from "react";
 
 const statuses: any = {
   Printed: "text-green-700 bg-green-50 ring-green-600/20",
@@ -7,11 +11,17 @@ const statuses: any = {
   Overdue: "text-red-700 bg-red-50 ring-red-600/10",
 };
 
-interface Props {
-  voucherTransactions: VoucherTransactions[];
-}
+const VoucherList = () => {
+  const { data: archivedVouchers } = useQuery({
+    queryKey: [fetchArchivedVouchers.key],
+    queryFn: fetchArchivedVouchers.get,
+  });
 
-const VoucherList: FC<Props> = ({ voucherTransactions }) => {
+  const voucherTransactions =
+    archivedVouchers && archivedVouchers.length > 0
+      ? groupBy(archivedVouchers, "date")
+      : {};
+
   return (
     <div className="pt-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -31,22 +41,23 @@ const VoucherList: FC<Props> = ({ voucherTransactions }) => {
                 </tr>
               </thead>
               <tbody>
-                {voucherTransactions?.map((day) => (
-                  <Fragment key={day.dateTime.toString()}>
+                {Object.keys(voucherTransactions).map((key) => (
+                  <Fragment key={key}>
                     <tr className="text-sm leading-6 text-gray-900">
                       <th
                         scope="colgroup"
                         colSpan={3}
                         className="relative isolate py-2 font-semibold"
                       >
-                        <time dateTime={day.dateTime.toDateString()}>
+                        {/* <time dateTime={day.dateTime.toDateString()}>
                           {day.dateTime.toDateString()}
-                        </time>
+                        </time> */}
+                        <time dateTime={key}>{key}</time>
                         <div className="absolute inset-y-0 right-full -z-10 w-screen border-b border-gray-200 bg-gray-50" />
                         <div className="absolute inset-y-0 left-0 -z-10 w-screen border-b border-gray-200 bg-gray-50" />
                       </th>
                     </tr>
-                    {day.transactions.map((transaction) => (
+                    {voucherTransactions[key].map((transaction: any) => (
                       <tr key={transaction.id}>
                         <td className="relative py-5 pr-6">
                           <div className="flex gap-x-6">
