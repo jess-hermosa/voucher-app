@@ -1,12 +1,13 @@
 import { Account } from "@/common/backend-types";
 import SlideOver from "@/components/Shared/SlideOver";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import InputForm from "./form/inputForm";
 import axios from "axios";
 import { accountUrl } from "@/common/apiUrl";
 import { fetchAccounts } from "@/server/api";
+import getQueryClient from "@/common/getQueryClient";
 
 interface Props {
   selectedAccount: Account | null;
@@ -14,7 +15,7 @@ interface Props {
 }
 
 const AccountForm: FC<Props> = ({ selectedAccount, clearForm }) => {
-  const queryClient = useQueryClient();
+  const queryClient = getQueryClient();
   const addAccount = useMutation({
     mutationFn: (account: Account) => {
       return axios.post(accountUrl, account);

@@ -1,8 +1,9 @@
 import { payeeUrl } from "@/common/apiUrl";
 import { Payee } from "@/common/backend-types";
+import getQueryClient from "@/common/getQueryClient";
 import SlideOver from "@/components/Shared/SlideOver";
 import { fetchPayees } from "@/server/api";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -14,7 +15,7 @@ interface Props {
 }
 
 const PayeeForm: FC<Props> = ({ selectedPayee, clearForm }) => {
-  const queryClient = useQueryClient();
+  const queryClient = getQueryClient();
   const addPayee = useMutation({
     mutationFn: (payee: Payee) => {
       return axios.post(payeeUrl, payee);

@@ -1,8 +1,9 @@
 import { employeeUrl } from "@/common/apiUrl";
 import { Employee } from "@/common/backend-types";
+import getQueryClient from "@/common/getQueryClient";
 import SlideOver from "@/components/Shared/SlideOver";
 import { fetchEmployees } from "@/server/api";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -14,7 +15,7 @@ interface Props {
 }
 
 const EmployeeForm: FC<Props> = ({ selectedEmployee, clearForm }) => {
-  const queryClient = useQueryClient();
+  const queryClient = getQueryClient();
   const addEmployee = useMutation({
     mutationFn: (employee: Employee) => {
       return axios.post(employeeUrl, employee);
