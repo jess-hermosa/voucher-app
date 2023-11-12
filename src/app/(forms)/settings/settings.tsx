@@ -1,14 +1,31 @@
 "use client";
 
-import { Settings } from "@/common/backend-types";
-import { fetchSettings } from "@/server/api";
+import { Payee, Settings } from "@/common/backend-types";
+import { fetchPayees, fetchSettings } from "@/server/api";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import SettingsForm from "./Form/settingsForm";
 
 const VoucherSettings = () => {
+  const [onEdit, setOnEdit] = useState(true);
+
+  const payeesQuery = useQuery({
+    queryKey: [fetchPayees.key],
+    queryFn: fetchPayees.get,
+  });
+
   const { data: settings } = useQuery({
     queryKey: [fetchSettings.key],
     queryFn: fetchSettings.get,
   });
+
+  const payees: Map<string, Payee> | null = payeesQuery.isSuccess
+    ? new Map(
+        payeesQuery.data?.map((obj: Payee) => {
+          return [obj.id, obj];
+        })
+      )
+    : null;
 
   return (
     <main className="px-4 py-16 sm:px-6 lg:flex-auto lg:px-0 lg:py-20">
@@ -28,15 +45,12 @@ const VoucherSettings = () => {
                   {setting.name}
                 </dt>
                 <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                  <div className="text-gray-900">
-                    {setting.account?.code || ""}
-                  </div>
-                  <button
-                    type="button"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Update
-                  </button>
+                  <SettingsForm
+                    onEdit={onEdit}
+                    setOnEdit={(isOpen: boolean) => setOnEdit(isOpen)}
+                    payees={payees || null}
+                    setting={setting}
+                  />
                 </dd>
               </div>
             ))}
