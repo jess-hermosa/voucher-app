@@ -7,8 +7,6 @@ import { useState } from "react";
 import SettingsForm from "./Form/settingsForm";
 
 const VoucherSettings = () => {
-  const [onEdit, setOnEdit] = useState(true);
-
   const payeesQuery = useQuery({
     queryKey: [fetchPayees.key],
     queryFn: fetchPayees.get,
@@ -40,17 +38,12 @@ const VoucherSettings = () => {
 
           <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
             {settings.map((setting: Settings) => (
-              <div className="pt-6 sm:flex">
+              <div className="pt-6 sm:flex items-center">
                 <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
                   {setting.name}
                 </dt>
                 <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                  <SettingsForm
-                    onEdit={onEdit}
-                    setOnEdit={(isOpen: boolean) => setOnEdit(isOpen)}
-                    payees={payees || null}
-                    setting={setting}
-                  />
+                  <SettingsForm payees={payees || null} setting={setting} />
                 </dd>
               </div>
             ))}

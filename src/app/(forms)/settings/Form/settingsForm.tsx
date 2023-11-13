@@ -1,17 +1,17 @@
 import { Payee, Settings } from "@/common/backend-types";
-import { FC } from "react";
+import { FC, useState } from "react";
 import ComboboxForm from "./comboBoxForm";
 import { Option } from "@/common/types";
 import { useForm } from "react-hook-form";
 
 interface Props {
-  onEdit: boolean;
-  setOnEdit: (isOpen: boolean) => void;
   payees: Map<string, Payee> | null;
   setting: Settings;
 }
 
-const SettingsForm: FC<Props> = ({ onEdit, setOnEdit, setting, payees }) => {
+const SettingsForm: FC<Props> = ({ setting, payees }) => {
+  const [onEdit, setOnEdit] = useState(false);
+
   const payeesOption = () => {
     let options: Option[] = [];
     payees?.forEach((p) => {
@@ -28,10 +28,10 @@ const SettingsForm: FC<Props> = ({ onEdit, setOnEdit, setting, payees }) => {
   return (
     <>
       {onEdit ? (
-        <form>
+        <form className="sm:flex items-center">
           <ComboboxForm
             name="defaultAccount"
-            label="Payee"
+            label=""
             options={payeesOption()}
             {...form}
           />
@@ -42,8 +42,9 @@ const SettingsForm: FC<Props> = ({ onEdit, setOnEdit, setting, payees }) => {
       <button
         type="button"
         className="font-semibold text-indigo-600 hover:text-indigo-500"
+        onClick={() => setOnEdit(!onEdit)}
       >
-        Update
+        {onEdit ? "Update" : "Edit"}
       </button>
     </>
   );
